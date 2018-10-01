@@ -24,6 +24,13 @@ RUN \
   echo >> /root/.bashrc && \
   echo "export PATH=~/scala-$SCALA_VERSION/bin:$PATH" >> /root/.bashrc
 
+# Install Rust
+RUN \
+  curl https://sh.rustup.rs -sSf -o rustup_install.sh && \
+  chmod +x rustup_install.sh && \
+  ./rustup_install.sh -y && \
+  rm rustup_install.sh
+
 # Install sbt
 RUN \
   curl -L -o sbt-$SBT_VERSION.deb https://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb && \
@@ -33,6 +40,10 @@ RUN \
   apt-get install sbt && \
   sbt sbtVersion
 
+# Install aux. tools
+RUN apt-get install make
+
+# Install docker
 RUN curl -sSL https://get.docker.com/ | sh
 
 # Define working directory
