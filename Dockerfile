@@ -29,7 +29,8 @@ RUN \
   curl https://sh.rustup.rs -sSf -o rustup_install.sh && \
   chmod +x rustup_install.sh && \
   ./rustup_install.sh -y && \
-  rm rustup_install.sh
+  rm rustup_install.sh && \
+  echo 'export PATH="$HOME/.cargo/bin:$PATH"' > ~/.bashrc
 
 # Install sbt
 RUN \
@@ -41,7 +42,7 @@ RUN \
   sbt sbtVersion
 
 # Install aux. tools
-RUN apt-get install make
+RUN apt-get install make gcc -y
 
 # Install docker
 RUN curl -sSL https://get.docker.com/ | sh
