@@ -3,8 +3,9 @@
 # Changes:
 #   - Pinned scala version to 2.12.3 instead of 2.12.4
 #   - Added docker to installation
+#   - Added rust stack
 #
-# Docker image responsible for building Graphcool service images.
+# Docker image responsible for building Prisma service images.
 #
 
 # Pull base image
@@ -18,19 +19,17 @@ ENV SBT_VERSION 1.0.4
 RUN touch /usr/lib/jvm/java-8-openjdk-amd64/release
 
 # Install Scala
-## Piping curl directly in tar
-RUN \
-  curl -fsL https://downloads.typesafe.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz | tar xfz - -C /root/ && \
-  echo >> /root/.bashrc && \
-  echo "export PATH=~/scala-$SCALA_VERSION/bin:$PATH" >> /root/.bashrc
+RUN curl -fsL https://downloads.typesafe.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz | tar xfz - -C /root/
 
 # Install Rust
 RUN \
   curl https://sh.rustup.rs -sSf -o rustup_install.sh && \
   chmod +x rustup_install.sh && \
   ./rustup_install.sh -y && \
-  rm rustup_install.sh && \
-  echo "export PATH=/root/.cargo/bin/:$PATH" >> /root/.bashrc
+  rm rustup_install.sh
+
+# SBT doesn't handle env vars properly, so just link it on the default path
+RUN ln -s ~/.cargo/bin/* /usr/bin/
 
 # Install sbt
 RUN \
