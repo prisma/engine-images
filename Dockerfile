@@ -30,7 +30,7 @@ RUN \
   chmod +x rustup_install.sh && \
   ./rustup_install.sh -y && \
   rm rustup_install.sh && \
-  ln -s /root/.cargo/bin/* /usr/local/bin/
+  echo "export PATH=/root/.cargo/bin/:$PATH" >> /root/.bashrc
 
 # Install sbt
 RUN \
