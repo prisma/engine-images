@@ -4,6 +4,7 @@
 #   - Pinned scala version to 2.12.3 instead of 2.12.4
 #   - Added docker to installation
 #   - Added rust stack
+#   - Added Graal
 #
 # Docker image responsible for building Prisma service images.
 #
@@ -39,6 +40,15 @@ RUN \
   apt-get update && \
   apt-get install sbt && \
   sbt sbtVersion
+
+# Install graal
+RUN mkdir /graalvm && \
+  curl -L --output graal.tar.gz https://github.com/oracle/graal/releases/download/vm-1.0.0-rc9/graalvm-ce-1.0.0-rc9-linux-amd64.tar.gz && \
+  tar xzf graal.tar.gz -C /graalvm && \
+  rm -rf graalvm.tar.gz
+
+ENV PATH /graalvm/Contents/Home/bin:$PATH
+ENV GRAAL_HOME /graalvm/Contents/Home
 
 # Install aux. tools
 RUN apt-get install make gcc -y
