@@ -21,7 +21,7 @@ RUN apk add glibc-2.28-r0.apk
 
 # Install graal
 RUN \
-  curl -L --output graal.tar.gz https://github.com/oracle/graal/releases/download/vm-1.0.0-rc9/graalvm-ce-1.0.0-rc9-linux-amd64.tar.gz && \
+  curl -L --output graal.tar.gz https://github.com/oracle/graal/releases/download/vm-1.0.0-rc10/graalvm-ce-1.0.0-rc10-linux-amd64.tar.gz && \
   tar xzf graal.tar.gz -C ${GRAAL_HOME} --strip-components 1 && \
   rm -rf /graalvm.tar.gz
 
@@ -29,12 +29,6 @@ RUN \
 RUN curl -fsL https://downloads.typesafe.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz | tar xfz - -C $SCALA_HOME --strip-components 1
 RUN curl -fsL https://piccolo.link/sbt-${SBT_VERSION}.tgz | tar xfz - -C $SBT_HOME  --strip-components 1
 RUN apk add --no-cache cargo
-
-# SBT doesn't handle env vars properly, so just link it on the default path
-# RUN ln -s ~/.cargo/bin/* /usr/bin/  
-
-# Change default shell
-RUN sed -i 's~:/bin/ash$~:/bin/bash~' /etc/passwd
 
 # Define working directory
 WORKDIR /root
