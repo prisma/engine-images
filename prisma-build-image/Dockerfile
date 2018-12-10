@@ -9,7 +9,7 @@ ENV JAVA_HOME /graalvm/Contents/Home
 ENV SBT_HOME /usr/local/sbt
 ENV SCALA_HOME /usr/local/scala
 ENV PATH ${GRAAL_HOME}/bin:${SCALA_HOME}/bin:${SBT_HOME}/bin:$PATH
-ENV LD_LIBRARY_PATH=/lib:/usr/lib
+ENV LD_LIBRARY_PATH=/lib:/usr/lib:/root/server/libs/jwt-native/src/main/resources
 
 RUN apk add --no-cache curl bash ca-certificates make gcc docker wget zlib-dev git ncurses musl-dev
 RUN mkdir -p $GRAAL_HOME
@@ -21,7 +21,7 @@ RUN apk add glibc-2.28-r0.apk
 
 # Install graal
 RUN \
-  curl -L --output graal.tar.gz https://github.com/oracle/graal/releases/download/vm-1.0.0-rc10/graalvm-ce-1.0.0-rc10-linux-amd64.tar.gz && \
+  curl -L --output graal.tar.gz https://github.com/oracle/graal/releases/download/vm-1.0.0-rc9/graalvm-ce-1.0.0-rc9-linux-amd64.tar.gz && \
   tar xzf graal.tar.gz -C ${GRAAL_HOME} --strip-components 1 && \
   rm -rf /graalvm.tar.gz
 
