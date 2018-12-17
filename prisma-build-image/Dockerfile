@@ -1,3 +1,5 @@
+## NOTE: Currently unused, will be updated as soon as we tackle alpine / musl
+
 FROM alpine:3.8
 
 # Env variables
@@ -22,7 +24,7 @@ RUN apk add glibc-2.28-r0.apk
 RUN \
   curl -L --output graal.tar.gz https://github.com/oracle/graal/releases/download/vm-1.0.0-rc9/graalvm-ce-1.0.0-rc9-linux-amd64.tar.gz && \
   tar xzf graal.tar.gz -C ${GRAAL_HOME} --strip-components 1 && \
-  rm -rf /graalvm.tar.gz
+  rm -rf graal.tar.gz
 
 # Install Scala & SBT & Rust
 RUN curl -fsL https://downloads.typesafe.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz | tar xfz - -C $SCALA_HOME --strip-components 1
