@@ -18,16 +18,5 @@ RUN \
   tar xzf graal.tar.gz -C ${GRAAL_HOME} --strip-components 1 && \
   rm -rf graal.tar.gz
 
-# Install Scala & SBT & Rust
-# RUN curl -fsL https://downloads.typesafe.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz | tar xfz - -C $SCALA_HOME --strip-components 1
-# RUN curl -fsL https://piccolo.link/sbt-${SBT_VERSION}.tgz | tar xfz - -C $SBT_HOME  --strip-components 1
-# RUN apk add --no-cache cargo
-
-# SBT doesn't handle env vars properly, so just link it on the default path
-# RUN ln -s ~/.cargo/bin/* /usr/bin/  
-
-# Change default shell
-# RUN sed -i 's~:/bin/ash$~:/bin/bash~' /etc/passwd
-
 # Define working directory
 WORKDIR /root

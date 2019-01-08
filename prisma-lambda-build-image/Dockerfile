@@ -7,7 +7,7 @@ ENV JAVA_HOME /graalvm/Contents/Home
 ENV SBT_HOME /usr/local/sbt
 ENV SCALA_HOME /usr/local/scala
 ENV PATH ${GRAAL_HOME}/bin:${SCALA_HOME}/bin:${SBT_HOME}/bin:/root/.cargo/bin:$PATH
-ENV LD_LIBRARY_PATH=/lib:/usr/lib:/root/server/libs/jwt-native/src/main/resources:/usr/include/linux
+ENV LD_LIBRARY_PATH=/lib:/usr/lib:/root/build/libs/jwt-native/src/main/resources:/usr/include/linux
 ENV RUST_BACKTRACE=1
 
 # RUN apk add --no-cache curl bash ca-certificates make gcc docker wget zlib-dev git ncurses musl-dev linux-headers
