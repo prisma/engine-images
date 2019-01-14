@@ -10,11 +10,12 @@ ENV SCALA_HOME /usr/local/scala
 ENV PATH ${GRAAL_HOME}/bin:${SCALA_HOME}/bin:${SBT_HOME}/bin:/root/.cargo/bin:$PATH
 ENV LD_LIBRARY_PATH=/lib:/usr/lib:/root/build/libs/jwt-native/src/main/resources:/usr/include/linux
 
-# RUN apk add --no-cache curl bash ca-certificates make gcc docker wget zlib-dev git ncurses musl-dev linux-headers
-RUN apt-get update && apt-get -y install wget curl git docker make build-essential libz-dev
+RUN apt-get update && apt-get -y install wget curl git make build-essential libz-dev
 RUN mkdir -p $GRAAL_HOME
 RUN mkdir -p $SCALA_HOME
 RUN mkdir -p $SBT_HOME
+
+RUN curl -sSL https://get.docker.com/ | sh
 
 # Install graal
 RUN \
