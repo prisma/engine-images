@@ -7,6 +7,6 @@ echo "steps:
   - label: \":lambda: Build Lambda Build Image\"
     command: cd prisma-lambda-build-image && make build && make push
 
-  - label: \":lambda: Build Graal Runtime Image\"
+  - label: \":java: Build Graal Runtime Image\"
     command: cd prisma-runtime-image-graal && make build && make push
 " | buildkite-agent pipeline upload

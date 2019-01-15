@@ -1,5 +1,5 @@
 build:
-	docker build -t prismagraphql/runtime-base:graal .
+	docker build -t prismagraphql/runtime-image:graal .
 
 push:
-	docker push prismagraphql/runtime-base:graal
+	docker push prismagraphql/runtime-image:graal
