@@ -14,7 +14,7 @@ RUN apk add glibc-2.28-r0.apk
 
 # Install graal
 RUN \
-  curl -L --output graal.tar.gz https://github.com/oracle/graal/releases/download/vm-1.0.0-rc10/graalvm-ce-1.0.0-rc10-linux-amd64.tar.gz && \
+  curl -L --output graal.tar.gz https://github.com/oracle/graal/releases/download/vm-1.0.0-rc11/graalvm-ce-1.0.0-rc11-linux-amd64.tar.gz && \
   tar xzf graal.tar.gz -C ${GRAAL_HOME} --strip-components 1 && \
   rm -rf graal.tar.gz
 
