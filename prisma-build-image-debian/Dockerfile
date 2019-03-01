@@ -8,9 +8,9 @@ ENV JAVA_HOME /graalvm/Contents/Home
 ENV SBT_HOME /usr/local/sbt
 ENV SCALA_HOME /usr/local/scala
 ENV PATH ${GRAAL_HOME}/bin:${SCALA_HOME}/bin:${SBT_HOME}/bin:/root/.cargo/bin:$PATH
-ENV LD_LIBRARY_PATH=/lib:/usr/lib:/root/build/libs/jwt-native/src/main/resources:/usr/include/linux
+ENV LD_LIBRARY_PATH=/lib:/usr/lib:/root/build/libs/jwt-native/src/main/resources:/usr/include/linux:/lib/x86_64-linux-gnu
 
-RUN apt-get update && apt-get -y install wget curl git make build-essential libz-dev
+RUN apt-get update && apt-get -y install wget curl git make build-essential libz-dev libsqlite3-dev
 RUN mkdir -p $GRAAL_HOME
 RUN mkdir -p $SCALA_HOME
 RUN mkdir -p $SBT_HOME
