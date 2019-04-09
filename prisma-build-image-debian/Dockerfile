@@ -11,7 +11,7 @@ ENV PATH ${GRAAL_HOME}/bin:${SCALA_HOME}/bin:${SBT_HOME}/bin:/root/.cargo/bin:$P
 ENV LD_LIBRARY_PATH=/lib:/usr/lib:/root/build/libs/jwt-native/src/main/resources:/usr/include/linux:/lib/x86_64-linux-gnu
 ENV SCCACHE_DIR=/root/cargo_cache
 
-RUN apt-get update && apt-get -y install wget curl git make build-essential libz-dev libsqlite3-dev openssl libssl-dev
+RUN apt-get update && apt-get -y install wget curl git make build-essential libz-dev libsqlite3-dev openssl libssl-dev pkg-config
 RUN mkdir -p $GRAAL_HOME
 RUN mkdir -p $SCALA_HOME
 RUN mkdir -p $SBT_HOME
