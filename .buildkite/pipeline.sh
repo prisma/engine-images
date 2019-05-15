@@ -2,14 +2,17 @@
 
 echo "steps:
   - label: \":debian: Build Debian Build Image\"
-    command: cd prisma-build-image-debian && make build && make push
+    command: cd debian-build-image && make build && make push
 
   - label: \":linux: Build Alpine MUSL Build Image\"
-    command: cd prisma-build-image-alpine && make build && make push
+    command: cd alpine-build-image && make build && make push
 
   - label: \":lambda: Build Lambda Build Image\"
-    command: cd prisma-lambda-build-image && make build && make push
+    command: cd lambda-build-image && make build && make push
 
   - label: \":java: Build Graal Runtime Image\"
-    command: cd prisma-runtime-image-graal && make build && make push
+    command: cd runtime-graal && make build && make push
+
+  - label: \":rust: Rust build image\"
+    command: cd rust && make build && make push
 " | buildkite-agent pipeline upload
