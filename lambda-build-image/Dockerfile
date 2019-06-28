@@ -9,10 +9,10 @@ RUN mv /usr/bin/openssl /usr/bin/openssl_old
 
 # Lock specific openssl version
 RUN \
-  curl -L --output openssl.tar.gz https://www.openssl.org/source/openssl-1.0.2s.tar.gz && \
+  curl -L --output openssl.tar.gz https://www.openssl.org/source/openssl-1.0.1k.tar.gz && \
   tar xzf openssl.tar.gz && \
   rm -rf openssl.tar.gz && \
-  cd openssl-1.0.2s && \
+  cd openssl-1.0.1k && \
   ./config && \
   make && \
   make install
