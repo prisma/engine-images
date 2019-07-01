@@ -15,4 +15,7 @@ echo "steps:
 
   - label: \":rust: Rust build image\"
     command: cd rust && make build && make push
+
+  - label: \":centos: CentOS 6 build image\"
+    command: cd centos6-build-image && make build && make push
 " | buildkite-agent pipeline upload

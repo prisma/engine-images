@@ -1,11 +1,11 @@
 FROM lambci/lambda:build-go1.x
 
 ENV PATH /root/.cargo/bin:$PATH
-ENV LD_LIBRARY_PATH=/lib:/usr/lib:/usr/include/linux
+# ENV LD_LIBRARY_PATH=/lib:/usr/lib:/usr/include/linux
 ENV RUST_BACKTRACE=1
 
 # Move existing openssl stuff where it doesn't interfere
-RUN mv /usr/bin/openssl /usr/bin/openssl_old
+# RUN mv /usr/bin/openssl /usr/bin/openssl_old
 
 # Lock specific openssl version
 # RUN \

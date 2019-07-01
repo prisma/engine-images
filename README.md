@@ -7,6 +7,8 @@ This repo contains all custom images used to build and run Prisma.
 - **Prisma build image debian**: Current build image containing Rust and Graal runtimes for compilation. Based on debian.
 - **Prisma runtime image graal**: Large runtime image that uses GraalVM instead of the JVM like we do on the apapsix java alpine image. DEPRECATED.
 - **Prisma rust image**: Slim build image for our Rust code.
+- **Prisma lambda build image**: DEPRECATED
+- **Prisma centos6 image**: Lambda & Zeit now compatible centos with glibc 2.17 & OpenSSL 1.0.1.
 
 ## How to build
 - CD into the folder you want to build.
