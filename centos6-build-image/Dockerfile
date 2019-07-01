@@ -1,11 +1,14 @@
 FROM centos:6
 
-ENV PATH /root/.cargo/bin:/opt/centos/devtoolset-1.1/root/usr/bin/:$PATH
+ENV PATH /root/.cargo/bin:/opt/centos/devtoolset-1.1/root/usr/bin/:/opt/rh/devtoolset-2/root/usr/bin:$PATH
 ENV RUST_BACKTRACE 1
+ENV PCP_DIR /opt/rh/devtoolset-2/root
+ENV PERL5LIB /opt/rh/devtoolset-2/root//usr/lib64/perl5/vendor_perl:/opt/rh/devtoolset-2/root/usr/lib/perl5:/opt/rh/devtoolset-2/root//usr/share/perl5/vendor_perl
+ENV LD_LIBRARY_PATH /opt/rh/devtoolset-2/root/usr/lib64:/opt/rh/devtoolset-2/root/usr/lib
+ENV PYTHONPATH /opt/rh/devtoolset-2/root/usr/lib64/python2.6/site-packages:/opt/rh/devtoolset-2/root/usr/lib/python2.6/site-packages
 
 # Install prerequisites
 RUN yum -y install kernel-headers openssl-devel
-RUN echo "source /opt/rh/devtoolset-2/enable" >> /etc/bashrc
 
 # Install glibc 2.17
 RUN curl http://copr-be.cloud.fedoraproject.org/results/mosquito/myrepo-el6/epel-6-x86_64/glibc-2.17-55.fc20/glibc-2.17-55.el6.x86_64.rpm -o glibc-2.17-55.el6.x86_64.rpm
@@ -18,9 +21,7 @@ RUN rpm -Uvh glibc-2.17-55.el6.x86_64.rpm \
     glibc-devel-2.17-55.el6.x86_64.rpm \
     glibc-headers-2.17-55.el6.x86_64.rpm
 
-# Custom install gcc 4.7+
-# RUN curl https://people.centos.org/tru/devtools-1.1/devtools-1.1.repo -o /etc/yum.repos.d/devtools-1.1.repo
-
+# Custom install gcc 4.8+
 RUN curl https://people.centos.org/tru/devtools-2/devtools-2.repo -o /etc/yum.repos.d/devtools-2.repo
 RUN yum -y install devtoolset-2-gcc devtoolset-2-binutils
 RUN yum -y install devtoolset-2-gcc-c++ devtoolset-2-gcc-gfortran
