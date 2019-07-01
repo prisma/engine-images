@@ -1,16 +1,16 @@
 #!/usr/bin/bash
 
 echo "steps:
-  - label: \":debian: Build Debian Build Image\"
+  - label: \":debian: Debian build image\"
     command: cd debian-build-image && make build && make push
 
-  - label: \":linux: Build Alpine MUSL Build Image\"
+  - label: \":linux: Alpine MUSL build image\"
     command: cd alpine-build-image && make build && make push
 
-  - label: \":lambda: Build Lambda Build Image\"
+  - label: \":lambda: Lambda build image\"
     command: cd lambda-build-image && make build && make push
 
-  - label: \":java: Build Graal Runtime Image\"
+  - label: \":java: Graal runtime image\"
     command: cd runtime-graal && make build && make push
 
   - label: \":rust: Rust build image\"
