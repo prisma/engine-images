@@ -1,6 +1,6 @@
 FROM centos:6
 
-ENV PATH /root/.cargo/bin:/opt/centos/devtoolset-1.0/root/usr/bin/:$PATH
+ENV PATH /root/.cargo/bin:/opt/centos/devtoolset-1.1/root/usr/bin/:$PATH
 ENV RUST_BACKTRACE 1
 
 # Install prerequisites

@@ -1,5 +1,5 @@
 build:
-	docker build -t prismagraphql/build-image:centos6-0.2 .
+	docker build -t prismagraphql/build-image:centos6-0.3 .
 
 push:
-	docker push prismagraphql/build-image:centos6-0.2
+	docker push prismagraphql/build-image:centos6-0.3
