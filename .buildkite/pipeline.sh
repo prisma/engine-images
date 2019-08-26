@@ -18,4 +18,7 @@ echo "steps:
 
   - label: \":centos: CentOS 6 build image\"
     command: cd centos6-build-image && make build && make push
+
+  - label: \":ubuntu: Ubuntu 16 LTS build image\"
+    command: cd ubuntu-16-build-image && make build && make push
 " | buildkite-agent pipeline upload
