@@ -8,7 +8,7 @@ ENV LD_LIBRARY_PATH /opt/rh/devtoolset-2/root/usr/lib64:/opt/rh/devtoolset-2/roo
 ENV PYTHONPATH /opt/rh/devtoolset-2/root/usr/lib64/python2.6/site-packages:/opt/rh/devtoolset-2/root/usr/lib/python2.6/site-packages
 
 # Install prerequisites
-RUN yum -y install kernel-headers openssl-devel
+RUN yum -y install kernel-headers openssl-devel git
 
 # Install glibc 2.17
 RUN curl http://copr-be.cloud.fedoraproject.org/results/mosquito/myrepo-el6/epel-6-x86_64/glibc-2.17-55.fc20/glibc-2.17-55.el6.x86_64.rpm -o glibc-2.17-55.el6.x86_64.rpm

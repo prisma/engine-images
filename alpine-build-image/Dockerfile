@@ -1,6 +1,6 @@
 FROM frolvlad/alpine-glibc
 
-RUN apk add --no-cache curl bash gcc build-base openssl openssl-dev linux-headers
+RUN apk add --no-cache curl bash gcc build-base openssl openssl-dev linux-headers git
 
 RUN curl https://sh.rustup.rs -o rustup-init
 RUN chmod +x rustup-init
