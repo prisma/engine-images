@@ -29,6 +29,8 @@ RUN \
   ./rustup_install.sh -y && \
   rm rustup_install.sh
 
+RUN rustup install beta && rustup default beta
+
 # SBT doesn't handle env vars properly, so just link it on the default path
 RUN ln -s ~/.cargo/bin/* /usr/bin/
 

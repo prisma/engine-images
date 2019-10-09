@@ -11,6 +11,7 @@ RUN curl -sSL https://get.docker.com/ | sh
 
 # Install Rust
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+RUN rustup install beta && rustup default beta
 
 # Define working directory
 WORKDIR /root

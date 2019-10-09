@@ -6,3 +6,4 @@ ENV RUST_BACKTRACE=1
 
 # Install Rust
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+RUN rustup install beta && rustup default beta
