@@ -1,6 +1,8 @@
-# Prisma Images
+# Prisma Images WIP
 
 This repo contains all custom images used to build and run Prisma.
+
+Todo: OpenSSL notes: Forward compatible, but not backwards -> Needs lowest version of x that we want to support, not highest (e.g. 1.0.x -> 1.0.1)
 
 ## Images
 - **Legacy build image**: Used before the transition to the native image.
