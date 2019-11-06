@@ -1,24 +1,22 @@
-# Prisma Images WIP
+# Prisma Images
 
-This repo contains all custom images used to build and run Prisma.
+This repo contains all build images for the [Prisma engines](https://github.com/prisma/prisma-engine).
+Images are based on the requirements of the ["Binaries" spec](https://github.com/prisma/specs/blob/master/binaries/Readme.md).
 
-Todo: OpenSSL notes: Forward compatible, but not backwards -> Needs lowest version of x that we want to support, not highest (e.g. 1.0.x -> 1.0.1)
+Images are based on the lowest common denominator of glibc and OpenSSL. In practice, this means:
+- OpenSSL variants 1.0.1 and 1.1.0: OpenSSL is forwards, but not backwards compatible. For example, 1.0.1 works with 1.0.2, but not vice versa.
+- We use the lowest image of an OS that we want to support (e.g. jessie for Debian) due to glibc restrictions. As with OpenSSL, glibc is forwards, but not backwards compatible.
+- On the lowest image mentioned above, we install OpenSSL either manually or via package manager, whichever is fitting.
 
 ## Images
-- **Legacy build image**: Used before the transition to the native image.
-- **Prisma build image debian**: Current build image containing Rust and Graal runtimes for compilation. Based on debian.
-- **Prisma runtime image graal**: Large runtime image that uses GraalVM instead of the JVM like we do on the apapsix java alpine image. DEPRECATED.
-- **Prisma rust image**: Slim build image for our Rust code.
-- **Prisma lambda build image**: DEPRECATED
-- **Prisma centos6 image**: Lambda & Zeit now compatible centos with glibc 2.17 & OpenSSL 1.0.1.
+- **Debian**: Debian-based build images for OpenSSL 1.0.1 and 1.1.0 and glibc 2.19. Usable for all debian derivatives (Ubuntu, Mint, etc.) and Arch Linux.
+- **RHEL**: CentOS-based build images for OpenSSL 1.0.1 and 1.1.0 and glibc 2.19. Usable for all RHEL derivatives (RedHat, CentOS, Amazon Linux, etc.).
+- **Cross**: Cross compilation image, currently for Windows MSVC cross compilation.
 
 ## How to build
 - CD into the folder you want to build.
-- `make build` builds the image locally.
-- `make push` pushes the image to DockerHub.
-- Note: You require the appropriate DockerHub rights to push.
-- Note: Pushing to master triggers a CI build that releases new images.
-- **Note: The legacy build image is not build on CI**
-
-## Important Notes
-- If you want to convince CI to take your newly build images, bump your image version in the Makefiles (including the tag). Then update the build cli to take your new image tag.
+- `make build` builds the image(s) locally.
+- `make push` pushes the image(s) to DockerHub.
+- Notes:
+  - You require the appropriate DockerHub rights to push.
+  - Pushing to master triggers a CI build that releases new images.
