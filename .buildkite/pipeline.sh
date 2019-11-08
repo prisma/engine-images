@@ -12,4 +12,8 @@ echo "steps:
   - label: \":rust: Cross compilation image\"
     command: cd cross && make build && make push
     branches: master
+
+  - label: \":rust: Test image\"
+    command: cd test && make build && make push
+    branches: master
 " | buildkite-agent pipeline upload
