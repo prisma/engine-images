@@ -1,3 +1,4 @@
+# Credit to https://wapl.es/rust/2019/02/17/rust-cross-compile-linux-to-macos.html for most of the installation steps.
 FROM debian:stretch
 
 ENV PATH=/root/.cargo/bin:$PATH
