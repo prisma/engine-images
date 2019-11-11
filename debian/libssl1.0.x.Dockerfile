@@ -6,7 +6,6 @@ RUN apt-get install -y curl wget pkg-config build-essential git zlib1g-dev
 # Install Rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 ENV PATH=/root/.cargo/bin:$PATH
-RUN rustup install beta && rustup default beta
 
 RUN wget https://www.openssl.org/source/openssl-1.0.1u.tar.gz
 RUN tar -xf openssl-1.0.1u.tar.gz

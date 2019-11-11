@@ -6,7 +6,6 @@ RUN yum install git curl pkg-config perl-core zlib-devel wget -y
 # Install Rust
 RUN curl -sSf https://sh.rustup.rs | sh -s -- -y
 ENV PATH=/root/.cargo/bin:$PATH
-RUN rustup install beta && rustup default beta
 
 RUN wget https://www.openssl.org/source/openssl-1.1.0i.tar.gz
 RUN tar -xf openssl-1.1.0i.tar.gz

@@ -9,7 +9,7 @@ echo "steps:
     command: cd rhel && make build && make push
     branches: master
 
-  - label: \":rust: Cross compilation image\"
+  - label: \":rust::windows::darwin: Cross compilation images\"
     command: cd cross && make build && make push
     branches: master
 
