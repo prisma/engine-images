@@ -8,4 +8,4 @@ build-windows:
 
 push:
 	docker push prismagraphql/build:cross-windows
-	docker build -t prismagraphql/build:cross-darwin .
+	docker push prismagraphql/build:cross-darwin
