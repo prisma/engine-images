@@ -21,4 +21,4 @@ Images are based on the lowest common denominator of glibc and OpenSSL. In pract
 ## Automatic image releases
 - Git pushing to master triggers a CI build that releases new images.
 - All images are pushed to `prismagraphql/build:<tag>`. Check the different Makefiles for the exact tags getting pushed.
-- **Important note**: Images can be read publicly. Do not commit secrets into the containers, not push anything confidential into the repository.
+- **Important note**: Images can be read publicly. Do not commit secrets into the containers; dp not push anything confidential into the repository.
