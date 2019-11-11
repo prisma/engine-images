@@ -1,5 +1,5 @@
-# Prisma Images
-This repo contains all build images for the [Prisma engines](https://github.com/prisma/prisma-engine), as well as test images.
+# Prisma Engine Images
+This repo contains all build and test images for the [Prisma engines](https://github.com/prisma/prisma-engine).
 Build images are based on the requirements of the ["Binaries" spec](https://github.com/prisma/specs/blob/master/binaries/Readme.md).
 
 Images are based on the lowest common denominator of glibc and OpenSSL. In practice, this means:
