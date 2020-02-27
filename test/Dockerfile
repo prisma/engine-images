@@ -20,3 +20,6 @@ RUN curl -sSL https://get.docker.com/ | sh
 RUN curl -fsL https://downloads.typesafe.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz | tar xfz - -C $SCALA_HOME --strip-components 1
 RUN curl -fsL https://piccolo.link/sbt-${SBT_VERSION}.tgz | tar xfz - -C $SBT_HOME --strip-components 1
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+
+# Initialize SBT
+RUN sbt exit
