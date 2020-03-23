@@ -10,10 +10,11 @@ Images are based on the lowest common denominator of glibc and OpenSSL. In pract
 - On the lowest image mentioned above, we install OpenSSL either manually or via package manager, whichever is fitting, then compile to get the binary for the target combination.
 
 ## Images
-- **Debian**: Debian-based build images for OpenSSL 1.0.1 and 1.1.0 and glibc 2.19. Usable for all debian derivatives (Ubuntu, Mint, etc.) and Arch Linux.
+- **Debian**: Debian-based (Jessie) build images for OpenSSL 1.0.1 and 1.1.0 and glibc 2.19. Usable for all debian derivatives (Ubuntu, Mint, etc.) and Arch Linux.
 - **RHEL**: CentOS-based build images for OpenSSL 1.0.1 and 1.1.0 and glibc 2.19. Usable for all RHEL derivatives (RedHat, CentOS, Amazon Linux, etc.).
 - **Cross**: Cross compilation images, currently for Windows GNU and MacOS cross compilation.
 - **Test**: Test base image for CI. Contains all dependencies to ryb the connector test kit and cargo tests.
+- **Release**: Debian-based (Bullseye) image responsible for computing checksums and GPG signatures as part of the Prisma release process.
 
 ## How to build the images
 - CD into the folder you want to build.
@@ -23,4 +24,4 @@ Images are based on the lowest common denominator of glibc and OpenSSL. In pract
 ## Automatic image releases
 - Git pushing to master triggers a CI build that releases new images.
 - All images are pushed to `prismagraphql/build:<tag>`. Check the different Makefiles for the exact tags getting pushed.
-- **Important note**: Images can be read publicly. Do not commit secrets into the containers; dp not push anything confidential into the repository.
+- **Important note**: Images can be read publicly. Do not commit secrets into the containers; do not push anything confidential into the repository.

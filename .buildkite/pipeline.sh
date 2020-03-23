@@ -16,4 +16,8 @@ echo "steps:
   - label: \":rust: Test image\"
     command: cd test && make build && make push
     branches: master
+
+  - label: \":rust: Release image\"
+    command: cd release && make build && make push
+    branches: master
 " | buildkite-agent pipeline upload
