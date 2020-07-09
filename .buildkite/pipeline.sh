@@ -13,7 +13,7 @@ echo "steps:
     command: cd musl && make build && make push
     branches: master
 
-  - label: \":rust::windows::darwin: Cross compilation images\"
+  - label: \":rust::freebsd::darwin: Cross compilation images\"
     command: cd cross && make build && make push
     branches: master
 
