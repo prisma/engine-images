@@ -9,7 +9,7 @@ ENV PATH ${SCALA_HOME}/bin:${SBT_HOME}/bin:/root/.cargo/bin:$PATH
 ENV LD_LIBRARY_PATH=/lib:/usr/lib:/usr/include/linux:/lib/x86_64-linux-gnu
 
 # Dependencies
-RUN apt-get update && apt-get -y install wget curl git make build-essential libz-dev libsqlite3-dev openssl libssl-dev pkg-config gzip mingw-w64 openjdk-8-jdk
+RUN apt-get update && apt-get -y install wget curl git make build-essential libz-dev libsqlite3-dev openssl libssl-dev pkg-config gzip mingw-w64 openjdk-8-jdk libkrb5-dev
 RUN mkdir -p $SCALA_HOME
 RUN mkdir -p $SBT_HOME
 

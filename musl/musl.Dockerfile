@@ -51,6 +51,7 @@ RUN apt-get update && \
     sudo \
     xutils-dev \
     gcc-multilib-arm-linux-gnueabihf \
+    libkrb5-dev \
     && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
     useradd rust --user-group --create-home --shell /bin/bash --groups sudo && \
