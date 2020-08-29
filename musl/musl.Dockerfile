@@ -53,6 +53,7 @@ RUN apt-get update && \
     gcc-multilib-arm-linux-gnueabihf \
     libkrb5-dev \
     libgss-dev \
+    libclang-dev \
     && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
     useradd rust --user-group --create-home --shell /bin/bash --groups sudo && \
