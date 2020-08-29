@@ -1,7 +1,7 @@
 FROM debian:jessie
 
 RUN apt-get update
-RUN apt-get install -y curl wget pkg-config build-essential git zlib1g-dev
+RUN apt-get install -y curl wget pkg-config build-essential git zlib1g-dev libkrb5-dev
 
 # Install Rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
