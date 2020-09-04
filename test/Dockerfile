@@ -10,6 +10,7 @@ ENV LD_LIBRARY_PATH=/lib:/usr/lib:/usr/include/linux:/lib/x86_64-linux-gnu
 
 # Dependencies
 RUN apt-get update && apt-get -y install wget curl git make build-essential libz-dev libsqlite3-dev openssl libssl-dev pkg-config gzip mingw-w64 libkrb5-dev libgss-dev libclang-dev libc6-dev libclang-common-7-dev software-properties-common clang
+RUN apt-get -y install llvm
 RUN wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add -
 RUN add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
 RUN apt-get update && apt-get -y install adoptopenjdk-8-hotspot
