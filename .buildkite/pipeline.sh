@@ -24,4 +24,8 @@ echo "steps:
   - label: \":rust: Release image\"
     command: cd release && make build && make push
     branches: master
+
+  - label: \":rust: SQL Server images\"
+    command: cd database && make build && make push
+    branches: master
 " | buildkite-agent pipeline upload
