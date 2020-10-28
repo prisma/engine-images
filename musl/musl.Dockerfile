@@ -83,6 +83,9 @@ RUN curl https://sh.rustup.rs -sSf | \
     rustup target add x86_64-unknown-linux-musl && \
     rustup target add armv7-unknown-linux-musleabihf
 
+RUN rustup toolchain install 1.46.0
+RUN rustup default 1.46.0
+
 ADD cargo-config.toml /root/.cargo/config
 
 # # Set up a `git credentials` helper for using GH_USER and GH_TOKEN to access
