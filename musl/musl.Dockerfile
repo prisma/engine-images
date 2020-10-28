@@ -80,11 +80,11 @@ ENV PATH=/root/.cargo/bin:/usr/local/musl/bin:/usr/local/sbin:/usr/local/bin:/us
 # manually.
 RUN curl https://sh.rustup.rs -sSf | \
     sh -s -- -y --default-toolchain $TOOLCHAIN && \
+    rustup toolchain install 1.46.0 && \
+    rustup default 1.46.0 && \
     rustup target add x86_64-unknown-linux-musl && \
     rustup target add armv7-unknown-linux-musleabihf
 
-RUN rustup toolchain install 1.46.0
-RUN rustup default 1.46.0
 
 ADD cargo-config.toml /root/.cargo/config
 
