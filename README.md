@@ -12,7 +12,7 @@ Images are based on the lowest common denominator of glibc and OpenSSL. In pract
 ## Images
 - **Debian**: Debian-based (Jessie) build images for OpenSSL 1.0.1 and 1.1.0 and glibc 2.19. Usable for all debian derivatives (Ubuntu, Mint, etc.) and Arch Linux.
 - **RHEL**: CentOS-based build images for OpenSSL 1.0.1 and 1.1.0 and glibc 2.19. Usable for all RHEL derivatives (RedHat, CentOS, Amazon Linux, etc.).
-- **Cross**: Cross compilation images, currently for Windows GNU and MacOS cross compilation.
+- **Cross**: Cross compilation images, currently for Windows GNU, MacOS and Linux ARM cross compilation.
 - **Test**: Test base image for CI. Contains all dependencies to run the connector test kit and cargo tests.
 - **Release**: Debian-based (Bullseye) image responsible for computing checksums and GPG signatures as part of the Prisma release process.
 
