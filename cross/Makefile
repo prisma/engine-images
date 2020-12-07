@@ -16,3 +16,4 @@ push:
 	docker push prismagraphql/build:cross-windows
 	docker push prismagraphql/build:cross-darwin
 	docker push prismagraphql/build:cross-linux-arm-ssl-1.1.x
+	docker push prismagraphql/build:cross-linux-arm-ssl-1.0.x
