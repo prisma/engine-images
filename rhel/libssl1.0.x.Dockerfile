@@ -6,5 +6,4 @@ RUN yum install git curl pkg-config openssl-devel krb5-devel gss-devel clang-dev
 # Install Rust
 RUN curl -sSf https://sh.rustup.rs | sh -s -- -y
 ENV PATH=/root/.cargo/bin:$PATH
-RUN rustup toolchain install 1.46.0
-RUN rustup default 1.46.0
+RUN rustup default stable
