@@ -1,4 +1,4 @@
-FROM centos:6
+FROM centos:7
 
 RUN yum groupinstall 'Development Tools' -y
 RUN yum install git curl pkg-config perl-core zlib-devel wget krb5-devel gss-devel clang-devel -y
