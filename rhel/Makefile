@@ -1,4 +1,4 @@
-build: build-1.0.x build-1.1.x
+build: build-1.1.x
 
 build-1.0.x:
 	docker build -f libssl1.0.x.Dockerfile -t prismagraphql/build:rhel-libssl1.0.x .
