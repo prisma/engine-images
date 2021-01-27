@@ -22,3 +22,4 @@ ENV CXX=o64-clang++
 RUN echo "[target.x86_64-apple-darwin]" >> ~/.cargo/config
 RUN echo "linker = \"x86_64-apple-darwin14-clang\"" >> ~/.cargo/config
 RUN echo "ar = \"x86_64-apple-darwin14-ar\"" >> ~/.cargo/config
+RUN echo "rustflags = [\"-C\", \"link-args=-undefined dynamic_lookup\"]" >> ~/.cargo/config
