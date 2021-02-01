@@ -1,4 +1,7 @@
-FROM amazon/lambda-build-node10.x
+FROM centos:7
+
+RUN yum groupinstall 'Development Tools' -y
+RUN yum install wget git curl perl-core zlib-devel openssl openssl-devel -y
 
 # Install Rust
 RUN curl -sSf https://sh.rustup.rs | sh -s -- -y
