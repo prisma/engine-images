@@ -26,6 +26,7 @@ RUN curl -fsL https://github.com/sbt/sbt/releases/download/v${SBT_VERSION}/sbt-$
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 RUN rustup install nightly
 RUN rustup default stable
+RUN rustup component add clippy
 
 # Initialize SBT
 RUN sbt exit

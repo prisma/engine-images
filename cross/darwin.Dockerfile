@@ -8,6 +8,7 @@ RUN apt-get update && apt-get -y install wget curl git make build-essential clan
 
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 RUN rustup target add x86_64-apple-darwin
+RUN rustup component add clippy
 
 # Install OSX cross toolchain
 RUN apt-get install -y cmake libxml2-dev

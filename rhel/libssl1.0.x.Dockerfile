@@ -7,3 +7,4 @@ RUN yum install wget git curl perl-core zlib-devel openssl openssl-devel -y
 RUN curl -sSf https://sh.rustup.rs | sh -s -- -y
 ENV PATH=/root/.cargo/bin:$PATH
 RUN rustup default stable
+RUN rustup component add clippy

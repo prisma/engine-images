@@ -82,6 +82,7 @@ RUN curl https://sh.rustup.rs -sSf | \
     sh -s -- -y --default-toolchain $TOOLCHAIN && \
     rustup target add x86_64-unknown-linux-musl && \
     rustup target add armv7-unknown-linux-musleabihf
+RUN rustup component add clippy
 
 
 ADD cargo-config.toml /root/.cargo/config

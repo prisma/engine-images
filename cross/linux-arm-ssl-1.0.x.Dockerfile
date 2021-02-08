@@ -17,6 +17,7 @@ ENV OPENSSL_DIR=/opt/openssl-arm
 # Install Rust
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 RUN rustup target add aarch64-unknown-linux-gnu
+RUN rustup component add clippy
 
 # from rust cross - https://github.com/rust-embedded/cross/blob/master/docker/Dockerfile.aarch64-unknown-linux-gnu#L27
 ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc
