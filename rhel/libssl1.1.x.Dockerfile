@@ -23,3 +23,4 @@ ENV OPENSSL_LIB_DIR /usr/local/ssl/lib
 RUN curl -sSf https://sh.rustup.rs | sh -s -- -y
 ENV PATH=/root/.cargo/bin:$PATH
 RUN rustup default stable
+RUN rustup component add clippy

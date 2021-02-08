@@ -7,6 +7,7 @@ RUN apt-get update && apt-get -y install wget curl git make build-essential libz
 
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 RUN rustup target add x86_64-pc-windows-gnu
+RUN rustup component add clippy
 
 RUN echo "[target.x86_64-pc-windows-gnu]" >> ~/.cargo/config
 RUN echo "linker = \"/usr/bin/x86_64-w64-mingw32-gcc\"" >> ~/.cargo/config
