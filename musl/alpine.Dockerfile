@@ -7,6 +7,6 @@ ENV RUSTFLAGS="-C target-feature=-crt-static" \
 
 RUN sed -i -e 's/v[[:digit:]]\..*\//edge\//g' /etc/apk/repositories && \
   apk update && \
-  apk add rustup musl-dev build-base bash clang openssl-dev git protobuf && \
+  apk add rustup musl-dev build-base bash clang openssl-dev git protoc protobuf && \
   rustup-init -y
 RUN rustup component add clippy
