@@ -28,4 +28,8 @@ echo "steps:
   - label: \":rust: SQL Server images\"
     command: cd database && make build && make push
     branches: master
+
+  - label: \":mongo: Mongo single-replica image\"
+    command: cd mongo && make build && make push
+    branches: master
 " | buildkite-agent pipeline upload
