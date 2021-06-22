@@ -29,7 +29,7 @@ echo "steps:
     command: cd database && make build && make push
     branches: master
 
-  - label: \":mongo: Mongo single-replica image\"
+  - label: \":mongodb: Mongo single-replica image\"
     command: cd mongo && make build && make push
     branches: master
 " | buildkite-agent pipeline upload

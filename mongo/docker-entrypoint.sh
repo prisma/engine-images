@@ -1,8 +1,8 @@
 #!/bin/bash
 set -Eeuo pipefail
 
-user=$MONGO_INITDB_ROOT_USERNAME
-pass=$MONGO_INITDB_ROOT_PASSWORD
+user=${MONGO_INITDB_ROOT_USERNAME-}
+pass=${MONGO_INITDB_ROOT_PASSWORD-}
 
 if [ "${1:0:1}" = '-' ]; then
 	set -- mongod "$@"
@@ -395,7 +395,7 @@ if [ "$user" ] && [ "$pass" ]; then
 EOJS
 
 else
-  "${mongo[@]}" admin <<-EOJS
+  mongo <<-EOJS
     rs.initiate({"_id" :"rs0","members":[{"_id":0,"host":"localhost:27017"}]})
 EOJS
 fi
