@@ -3,6 +3,7 @@ set -Eeuo pipefail
 
 user=${MONGO_INITDB_ROOT_USERNAME-}
 pass=${MONGO_INITDB_ROOT_PASSWORD-}
+bindHost=${REPLICA_BIND_HOST:-localhost}
 
 if [ "${1:0:1}" = '-' ]; then
 	set -- mongod "$@"
@@ -390,13 +391,13 @@ sleep 2
 echo "Initializing replica set..."
 
 if [ "$user" ] && [ "$pass" ]; then
-  "${mongo[@]}" admin -u $user -p $pass <<-EOJS
-    rs.initiate({"_id" :"rs0","members":[{"_id":0,"host":"localhost:27017"}]})
+  "${mongo[@]}" -u $user -p $pass <<-EOJS
+    rs.initiate({"_id" :"rs0","members":[{"_id":0,"host":"$bindHost:27017"}]})
 EOJS
 
 else
   mongo <<-EOJS
-    rs.initiate({"_id" :"rs0","members":[{"_id":0,"host":"localhost:27017"}]})
+    rs.initiate({"_id" :"rs0","members":[{"_id":0,"host":"$bindHost:27017"}]})
 EOJS
 fi
 
