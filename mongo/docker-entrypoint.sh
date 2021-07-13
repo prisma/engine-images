@@ -388,19 +388,27 @@ set -- "$@" --replSet rs0 --logpath /var/tmp/mongod.log
 $@ &
 sleep 2
 
-echo "Initializing replica set..."
 
-if [ "$user" ] && [ "$pass" ]; then
-  "${mongo[@]}" -u $user -p $pass <<-EOJS
-    rs.initiate({"_id" :"rs0","members":[{"_id":0,"host":"$bindHost:27017"}]})
-EOJS
+# Ensure that the replica set is only initialized once
+RS_CREATED_FILE="/var/tmp/.initialized"
 
-else
-  mongo <<-EOJS
-    rs.initiate({"_id" :"rs0","members":[{"_id":0,"host":"$bindHost:27017"}]})
-EOJS
+if [ ! -f "$RS_CREATED_FILE" ];	then
+
+	echo "Initializing replica set..."
+	if [ "$user" ] && [ "$pass" ]; then
+		"${mongo[@]}" -u $user -p $pass <<-EOJS
+			rs.initiate({"_id" :"rs0","members":[{"_id":0,"host":"$bindHost:27017"}]})
+	EOJS
+
+	else
+		mongo <<-EOJS
+			rs.initiate({"_id" :"rs0","members":[{"_id":0,"host":"$bindHost:27017"}]})
+	EOJS
+	fi
+
+	touch $RS_CREATED_FILE
+	echo "Initializing replica set... done"
 fi
 
-echo "Initializing replica set... done"
 
 tail -f /var/tmp/mongod.log
