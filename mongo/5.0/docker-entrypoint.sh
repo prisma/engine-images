@@ -4,6 +4,7 @@ set -Eeuo pipefail
 user=${MONGO_INITDB_ROOT_USERNAME-}
 pass=${MONGO_INITDB_ROOT_PASSWORD-}
 bindHost=${REPLICA_BIND_HOST:-localhost}
+port=${MONGO_PORT}
 
 if [ "${1:0:1}" = '-' ]; then
 	set -- mongod "$@"
@@ -275,7 +276,7 @@ if [ "$originalArgOne" = 'mongod' ]; then
 			_mongod_hack_ensure_arg_val --config "$tempConfigFile" "${mongodHackedArgs[@]}"
 		fi
 		_mongod_hack_ensure_arg_val --bind_ip 127.0.0.1 "${mongodHackedArgs[@]}"
-		_mongod_hack_ensure_arg_val --port 27017 "${mongodHackedArgs[@]}"
+		_mongod_hack_ensure_arg_val --port ${port} "${mongodHackedArgs[@]}"
 		_mongod_hack_ensure_no_arg --bind_ip_all "${mongodHackedArgs[@]}"
 
 		# remove "--auth" and "--replSet" for our initial startup (see https://docs.mongodb.com/manual/tutorial/enable-authentication/#start-mongodb-without-access-control)
@@ -317,12 +318,9 @@ if [ "$originalArgOne" = 'mongod' ]; then
 		rm -f "$pidfile"
 		_mongod_hack_ensure_arg_val --pidfilepath "$pidfile" "${mongodHackedArgs[@]}"
 
-		echo "Starting mongo"
-		echo "${mongodHackedArgs[@]}" --fork
-
 		"${mongodHackedArgs[@]}" --fork
 
-		mongo=( mongo --host 127.0.0.1 --port 27017 --quiet )
+		mongo=( mongo --host 127.0.0.1 --port $port --quiet )
 
 		# check to see that our "mongod" actually did start up (catches "--help", "--version", MongoDB 3.2 being silly, slow prealloc, etc)
 		# https://jira.mongodb.org/browse/SERVER-16292
@@ -337,7 +335,6 @@ if [ "$originalArgOne" = 'mongod' ]; then
 			fi
 			if "${mongo[@]}" 'admin' --eval 'quit(0)' &> /dev/null; then
 				# success!
-				echo "Success!!!!!!!!"
 				break
 			fi
 			(( tries-- ))
@@ -353,7 +350,7 @@ if [ "$originalArgOne" = 'mongod' ]; then
 		if [ "$MONGO_INITDB_ROOT_USERNAME" ] && [ "$MONGO_INITDB_ROOT_PASSWORD" ]; then
 			rootAuthDatabase='admin'
 
-			echo "Creating root user...: ${mongo[@]}" "$rootAuthDatabase"
+			echo "Creating root user..."
 
 			"${mongo[@]}" "$rootAuthDatabase" <<-EOJS
 				db.createUser({
@@ -376,9 +373,9 @@ if [ "$originalArgOne" = 'mongod' ]; then
 			echo
 		done
 
-		echo "Shutdown mongo"
-		echo "${mongodHackedArgs[@]}" "--shutdown"
-		mongod --shutdown
+		echo "Shutting down mongo..."
+
+		"${mongodHackedArgs[@]}" --shutdown
 		rm -f "$pidfile"
 
 		echo
@@ -402,9 +399,7 @@ if [ "$originalArgOne" = 'mongod' ]; then
 fi
 
 rm -f "$jsonConfigFile" "$tempConfigFile"
-set -- "$@" --logpath /var/tmp/mongod.log --replSet rs0 --keyFile /security.keyFile
-
-echo "Setup replica set: $@"
+set -- "$@" --port $port --replSet rs0 --logpath /var/tmp/mongod.log --keyFile /security.keyFile
 
 $@ &
 sleep 2
@@ -416,16 +411,14 @@ if [ ! -f "$RS_CREATED_FILE" ];	then
 
 	echo "Initializing replica set..."
 
-  echo "Connecting to MongoDB: " "${mongo[@]} -u $user -p $pass"
-
 	if [ "$user" ] && [ "$pass" ]; then
-		mongo --host 127.0.0.1 --port 27017 --quiet -u prisma -p prisma<<-EOJS
-			rs.initiate({"_id" :"rs0","members":[{"_id":0,"host":"$bindHost:27017"}]})
+		"${mongo[@]}" -u $user -p $pass <<-EOJS
+			rs.initiate({"_id" :"rs0","members":[{"_id":0,"host":"$bindHost:$port"}]})
 	EOJS
 
 	else
 		mongo <<-EOJS
-			rs.initiate({"_id" :"rs0","members":[{"_id":0,"host":"$bindHost:27017"}]})
+			rs.initiate({"_id" :"rs0","members":[{"_id":0,"host":"$bindHost:$port"}]})
 	EOJS
 	fi
 
