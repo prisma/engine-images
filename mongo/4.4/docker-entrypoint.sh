@@ -4,7 +4,7 @@ set -Eeuo pipefail
 user=${MONGO_INITDB_ROOT_USERNAME-}
 pass=${MONGO_INITDB_ROOT_PASSWORD-}
 bindHost=${REPLICA_BIND_HOST:-localhost}
-port=${MONGO_PORT}
+port=${MONGO_PORT:-27017}
 
 if [ "${1:0:1}" = '-' ]; then
 	set -- mongod "$@"
