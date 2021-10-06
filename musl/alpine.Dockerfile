@@ -1,14 +1,8 @@
-FROM node:10-alpine
+FROM rust:alpine
 
 ENV RUSTFLAGS="-C target-feature=-crt-static" \
-  PATH="/usr/local/cargo/bin/rustup:/root/.cargo/bin:$PATH" \
-  CC="clang" \
-  CXX="clang++" \
-  PROTOC="/usr/bin/protoc" \
-  PROTOC_INCLUDE="/usr/include"
+  PROTOC_INCLUDE="/usr/include" \
+  PROTOC="/usr/bin/protoc"
 
-RUN sed -i -e 's/v[[:digit:]]\..*\//edge\//g' /etc/apk/repositories && \
-  apk update && \
-  apk add rustup musl-dev build-base bash clang openssl-dev git protoc protobuf protobuf-dev && \
-  rustup-init -y
-RUN rustup component add clippy
+RUN apk update && \
+  apk add perl musl-dev build-base bash clang openssl-dev git protoc protobuf protobuf-dev
