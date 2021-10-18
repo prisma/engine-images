@@ -4,6 +4,7 @@ set -Eeuo pipefail
 user=${MONGO_INITDB_ROOT_USERNAME-}
 pass=${MONGO_INITDB_ROOT_PASSWORD-}
 bindHost=${REPLICA_BIND_HOST:-localhost}
+port=${MONGO_PORT:-27017}
 
 if [ "${1:0:1}" = '-' ]; then
 	set -- mongod "$@"
@@ -264,7 +265,7 @@ if [ "$originalArgOne" = 'mongod' ]; then
 			_mongod_hack_ensure_arg_val --config "$tempConfigFile" "${mongodHackedArgs[@]}"
 		fi
 		_mongod_hack_ensure_arg_val --bind_ip 127.0.0.1 "${mongodHackedArgs[@]}"
-		_mongod_hack_ensure_arg_val --port 27017 "${mongodHackedArgs[@]}"
+		_mongod_hack_ensure_arg_val --port ${port} "${mongodHackedArgs[@]}"
 		_mongod_hack_ensure_no_arg --bind_ip_all "${mongodHackedArgs[@]}"
 
 		# remove "--auth" and "--replSet" for our initial startup (see https://docs.mongodb.com/manual/tutorial/enable-authentication/#start-mongodb-without-access-control)
@@ -308,7 +309,7 @@ if [ "$originalArgOne" = 'mongod' ]; then
 
 		"${mongodHackedArgs[@]}" --fork
 
-		mongo=( mongo --host 127.0.0.1 --port 27017 --quiet )
+		mongo=( mongo --host 127.0.0.1 --port $port --quiet )
 
 		# check to see that our "mongod" actually did start up (catches "--help", "--version", MongoDB 3.2 being silly, slow prealloc, etc)
 		# https://jira.mongodb.org/browse/SERVER-16292
@@ -338,6 +339,8 @@ if [ "$originalArgOne" = 'mongod' ]; then
 		if [ "$MONGO_INITDB_ROOT_USERNAME" ] && [ "$MONGO_INITDB_ROOT_PASSWORD" ]; then
 			rootAuthDatabase='admin'
 
+			echo "Creating root user..."
+
 			"${mongo[@]}" "$rootAuthDatabase" <<-EOJS
 				db.createUser({
 					user: $(_js_escape "$MONGO_INITDB_ROOT_USERNAME"),
@@ -358,6 +361,8 @@ if [ "$originalArgOne" = 'mongod' ]; then
 			esac
 			echo
 		done
+
+		echo "Shutting down mongo..."
 
 		"${mongodHackedArgs[@]}" --shutdown
 		rm -f "$pidfile"
@@ -383,11 +388,10 @@ if [ "$originalArgOne" = 'mongod' ]; then
 fi
 
 rm -f "$jsonConfigFile" "$tempConfigFile"
-set -- "$@" --replSet rs0 --logpath /var/tmp/mongod.log
+set -- "$@" --port $port --replSet rs0 --logpath /var/tmp/mongod.log
 
 $@ &
 sleep 2
-
 
 # Ensure that the replica set is only initialized once
 RS_CREATED_FILE="/var/tmp/.initialized"
@@ -395,14 +399,15 @@ RS_CREATED_FILE="/var/tmp/.initialized"
 if [ ! -f "$RS_CREATED_FILE" ];	then
 
 	echo "Initializing replica set..."
+
 	if [ "$user" ] && [ "$pass" ]; then
 		"${mongo[@]}" -u $user -p $pass <<-EOJS
-			rs.initiate({"_id" :"rs0","members":[{"_id":0,"host":"$bindHost:27017"}]})
+			rs.initiate({"_id" :"rs0","members":[{"_id":0,"host":"$bindHost:$port"}]})
 	EOJS
 
 	else
 		mongo <<-EOJS
-			rs.initiate({"_id" :"rs0","members":[{"_id":0,"host":"$bindHost:27017"}]})
+			rs.initiate({"_id" :"rs0","members":[{"_id":0,"host":"$bindHost:$port"}]})
 	EOJS
 	fi
 
