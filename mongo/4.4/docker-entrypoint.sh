@@ -5,6 +5,7 @@ user=${MONGO_INITDB_ROOT_USERNAME-}
 pass=${MONGO_INITDB_ROOT_PASSWORD-}
 bindHost=${REPLICA_BIND_HOST:-localhost}
 port=${MONGO_PORT:-27017}
+initWait=${INIT_WAIT_SEC:-2}
 
 if [ "${1:0:1}" = '-' ]; then
 	set -- mongod "$@"
@@ -391,7 +392,9 @@ rm -f "$jsonConfigFile" "$tempConfigFile"
 set -- "$@" --port $port --replSet rs0 --logpath /var/tmp/mongod.log
 
 $@ &
-sleep 2
+
+echo "Waiting for initialization..."
+sleep $initWait
 
 # Ensure that the replica set is only initialized once
 RS_CREATED_FILE="/var/tmp/.initialized"
