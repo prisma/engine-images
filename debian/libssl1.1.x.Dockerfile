@@ -1,11 +1,15 @@
 FROM debian:jessie
 
 RUN apt-get update
-RUN apt-get install -y curl wget pkg-config build-essential git zlib1g-dev libkrb5-dev libgss-dev libclang-dev
+RUN apt-get install -y curl wget pkg-config build-essential git zlib1g-dev libkrb5-dev libgss-dev libclang-dev  ca-certificates
 
 # Install Rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 ENV PATH=/root/.cargo/bin:$PATH
+
+# DST expiration workaround
+RUN sed '/DST_Root_CA_X3.crt/d' /etc/ca-certificates.conf > /tmp/cacerts.conf && mv /tmp/cacerts.conf /etc/ca-certificates.conf
+RUN update-ca-certificates
 
 RUN wget https://www.openssl.org/source/openssl-1.1.0l.tar.gz
 RUN tar -xf openssl-1.1.0l.tar.gz

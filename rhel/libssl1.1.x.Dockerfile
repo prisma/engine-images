@@ -1,7 +1,7 @@
 FROM centos:7
 
 RUN yum groupinstall 'Development Tools' -y
-RUN yum install wget git curl perl-core zlib-devel -y
+RUN yum install wget git curl perl-core zlib-devel ca-certificates -y
 
 RUN wget -c https://www.openssl.org/source/openssl-1.1.1i.tar.gz
 RUN tar -xzvf openssl-1.1.1i.tar.gz
