@@ -26,10 +26,14 @@ echo "steps:
     branches: master
 
   - label: \":rust: SQL Server images\"
-    command: cd database && make build && make push
+    command: cd sql_server && make build && make push
     branches: master
 
   - label: \":mongodb: Mongo single-replica image\"
     command: cd mongo && make build && make push
+    branches: master
+
+  - label: \":cockroach: CockroachDB custom image\"
+    command: cd cockroach && make build && make push
     branches: master
 " | buildkite-agent pipeline upload
