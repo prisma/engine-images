@@ -1,2 +1,2 @@
-FROM otanatcockroach/cockroachdb-custom:v2.1
+FROM otanatcockroach/cockroachdb-custom:v2.1.1
 COPY prisma_init.sql /docker-entrypoint-initdb.d/prisma_init.sql
