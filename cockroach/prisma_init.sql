@@ -1,8 +1,6 @@
 CREATE USER prisma;
 GRANT admin TO prisma;
 
-ALTER USER prisma SET null_ordered_last = true;
-
 SET CLUSTER SETTING sql.defaults.default_int_size = 4;
 SET CLUSTER SETTING sql.defaults.serial_normalization = 'sql_sequence';
 SET CLUSTER SETTING schemachanger.backfiller.buffer_increment = '128 KiB';
