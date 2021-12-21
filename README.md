@@ -2,7 +2,7 @@
 [![Build status](https://badge.buildkite.com/e1edf477cecc77e01d2eff2cc64edc5bfd07db651fe602f8b6.svg)](https://buildkite.com/prisma/prisma-engine-images)
 
 This repo contains all build and test images for the [Prisma engines](https://github.com/prisma/prisma-engine).
-Build images are based on the requirements of the ["Binaries" spec](https://github.com/prisma/specs/blob/master/binaries/Readme.md).
+Build images are based on the requirements of the ["Binaries" spec](https://github.com/prisma/specs/blob/main/binaries/Readme.md).
 
 Images are based on the lowest common denominator of glibc and OpenSSL. In practice, this means:
 - OpenSSL variants 1.0.1 and 1.1.0: OpenSSL is forwards, but not backwards compatible. For example, 1.0.1 works with 1.0.2, but not vice versa.
@@ -22,7 +22,7 @@ Images are based on the lowest common denominator of glibc and OpenSSL. In pract
 - `make push` pushes the image(s) to DockerHub (requires access, of course).
 
 ## Automatic image releases
-- Git pushing to master triggers a CI build that releases new images.
+- Git pushing to main triggers a CI build that releases new images.
 - All images are pushed to `prismagraphql/build:<tag>`. Check the different Makefiles for the exact tags getting pushed.
 - **Important note**: Images can be read publicly. Do not commit secrets into the containers; do not push anything confidential into the repository.
 
