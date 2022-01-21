@@ -7,7 +7,7 @@ SET CLUSTER SETTING sql.defaults.default_int_size = 4;
 SET CLUSTER SETTING sql.defaults.serial_normalization = 'sql_sequence';
 
 
--- Testing only configuration via https://docs.google.com/document/d/1gdR2INnRnVx6qtrlWfTWQ0ZISucpMrWzfIfHAGCwwyo/edit#
+-- Testing only configuration for CockroachDB
 
 -- During table backfills, we fill up buffers which have a large default. A lower setting reduces memory usage.
 SET CLUSTER SETTING schemachanger.backfiller.buffer_increment = '128 KiB';
