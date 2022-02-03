@@ -4,6 +4,7 @@ GRANT admin TO prisma;
 SET CLUSTER SETTING sql.defaults.default_int_size = 4;
 SET CLUSTER SETTING sql.defaults.serial_normalization = 'sql_sequence';
 SET CLUSTER SETTING schemachanger.backfiller.buffer_increment = '128 KiB';
+SET CLUSTER SETTING sql.catalog.unsafe_skip_system_config_trigger.enabled = true;
 SET CLUSTER SETTING kv.range_merge.queue_interval = '50ms';
 SET CLUSTER SETTING kv.raft_log.disable_synchronization_unsafe = true;
 SET CLUSTER SETTING jobs.retention_time = '15s';
