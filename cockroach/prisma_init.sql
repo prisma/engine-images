@@ -3,7 +3,7 @@ GRANT admin TO prisma;
 
 -- https://www.cockroachlabs.com/docs/stable/cluster-settings.html
 
--- ???
+-- `CREATE TABLE t (a INT)` is INT4 (PG default), not INT8 (CRDB default)
 SET CLUSTER SETTING sql.defaults.default_int_size = 4;
 -- https://www.cockroachlabs.com/docs/stable/serial.html#modes-of-operation
 SET CLUSTER SETTING sql.defaults.serial_normalization = 'sql_sequence';
