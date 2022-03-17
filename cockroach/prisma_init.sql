@@ -6,14 +6,11 @@ GRANT admin TO prisma;
 -- During table backfills, we fill up buffers which have a large default. A lower setting reduces memory usage.
 SET CLUSTER SETTING schemachanger.backfiller.buffer_increment = '128 KiB';
 
--- Setting can be removed once we stop gossiping the system config span (https://github.com/cockroachdb/cockroach/issues/70560), which is planned for 22.1 as part of multi-tenant zone config support.
-SET CLUSTER SETTING sql.catalog.unsafe_skip_system_config_trigger.enabled = true;
-
 -- Frequent table create/drop creates extra ranges, which we want to merge quickly. In real usage, range merges are rate limited because they require rebalancing
-SET CLUSTER SETTING kv.range_merge.queue_interval = '50ms'; 
+SET CLUSTER SETTING kv.range_merge.queue_interval = '50ms';
 
 -- Setting improves performance by not syncing data to disk. Data is lost if a node crashes. This matches another recommendation to use cockroach start-single-node --store-type=mem.
-SET CLUSTER SETTING kv.raft_log.disable_synchronization_unsafe = true; 
+SET CLUSTER SETTING kv.raft_log.disable_synchronization_unsafe = true;
 
 -- More schema changes create more jobs, which affects job queries performance. We don’t need to retain jobs during testing so can set a more aggressive delete policy.
 SET CLUSTER SETTING jobs.retention_time = '15s';
