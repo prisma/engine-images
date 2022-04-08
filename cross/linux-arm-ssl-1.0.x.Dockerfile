@@ -11,6 +11,7 @@ ENV OPENSSL_VERSION=openssl-1.0.2u
 ENV DOWNLOAD_SITE=https://www.openssl.org/source/old/1.0.2
 RUN wget $DOWNLOAD_SITE/$OPENSSL_VERSION.tar.gz && tar zxf $OPENSSL_VERSION.tar.gz
 RUN cd $OPENSSL_VERSION && ./Configure linux-aarch64 --cross-compile-prefix=/usr/bin/aarch64-linux-gnu- --prefix=/opt/openssl-arm --openssldir=/opt/openssl-arm -static && make install
+
 # This env var configures rust-openssl to use the cross compiled version
 ENV OPENSSL_DIR=/opt/openssl-arm
 
