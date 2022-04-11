@@ -21,4 +21,4 @@ RUN ldconfig -v
 
 ENV PATH=/usr/local/ssl/bin:$PATH
 ENV OPENSSL_DIR /usr/local/ssl
-ENV OPENSSL_LIB_DIR /usr/local/ssl/lib/lib64
+ENV OPENSSL_LIB_DIR /usr/local/ssl/lib64
