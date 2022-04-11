@@ -3,15 +3,15 @@
 if [[ "$BUILDKITE_BRANCH" == "main" ]]; then
     # Build & push images
     echo "steps:
-    - label: \":debian: Debian build image\"
+    - label: \":debian: Debian build images\"
       command: cd debian && make build && make push
       branches: main
 
-    - label: \":rhel: RHEL build image\"
+    - label: \":rhel: RHEL build images\"
       command: cd rhel && make build && make push
       branches: main
 
-    - label: \":linux: Musl build image\"
+    - label: \":linux: Musl build images\"
       command: cd musl && make build && make push
       branches: main
 
@@ -31,7 +31,7 @@ if [[ "$BUILDKITE_BRANCH" == "main" ]]; then
       command: cd sql_server && make build && make push
       branches: main
 
-    - label: \":mongodb: Mongo single-replica image\"
+    - label: \":mongodb: Mongo single-replica images\"
       command: cd mongo && make build && make push
       branches: main
 
@@ -42,13 +42,13 @@ if [[ "$BUILDKITE_BRANCH" == "main" ]]; then
 else
     # Only build images
     echo "steps:
-    - label: \":debian: Debian build image\"
+    - label: \":debian: Debian build images\"
       command: cd debian && make build
 
-    - label: \":rhel: RHEL build image\"
+    - label: \":rhel: RHEL build images\"
       command: cd rhel && make build
 
-    - label: \":linux: Musl build image\"
+    - label: \":linux: Musl build images\"
       command: cd musl && make build
 
     - label: \":rust::darwin::windows: Cross compilation images\"
@@ -63,7 +63,7 @@ else
     - label: \":mssql: SQL Server images\"
       command: cd sql_server && make build
 
-    - label: \":mongodb: Mongo single-replica image\"
+    - label: \":mongodb: Mongo single-replica images\"
       command: cd mongo && make build
 
     - label: \":cockroach: CockroachDB custom images\"
