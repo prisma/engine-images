@@ -7,10 +7,10 @@ GRANT admin TO prisma;
 SET CLUSTER SETTING schemachanger.backfiller.buffer_increment = '128 KiB';
 
 -- Frequent table create/drop creates extra ranges, which we want to merge quickly. In real usage, range merges are rate limited because they require rebalancing
-SET CLUSTER SETTING kv.range_merge.queue_interval = '50ms'; 
+SET CLUSTER SETTING kv.range_merge.queue_interval = '50ms';
 
 -- Setting improves performance by not syncing data to disk. Data is lost if a node crashes. This matches another recommendation to use cockroach start-single-node --store-type=mem.
-SET CLUSTER SETTING kv.raft_log.disable_synchronization_unsafe = true; 
+SET CLUSTER SETTING kv.raft_log.disable_synchronization_unsafe = true;
 
 -- More schema changes create more jobs, which affects job queries performance. We don’t need to retain jobs during testing so can set a more aggressive delete policy.
 SET CLUSTER SETTING jobs.retention_time = '15s';
