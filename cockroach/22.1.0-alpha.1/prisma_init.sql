@@ -6,9 +6,6 @@ GRANT admin TO prisma;
 -- During table backfills, we fill up buffers which have a large default. A lower setting reduces memory usage.
 SET CLUSTER SETTING schemachanger.backfiller.buffer_increment = '128 KiB';
 
--- Setting can be removed once we stop gossiping the system config span (https://github.com/cockroachdb/cockroach/issues/70560), which is planned for 22.1 as part of multi-tenant zone config support.
-SET CLUSTER SETTING sql.catalog.unsafe_skip_system_config_trigger.enabled = true;
-
 -- Frequent table create/drop creates extra ranges, which we want to merge quickly. In real usage, range merges are rate limited because they require rebalancing
 SET CLUSTER SETTING kv.range_merge.queue_interval = '50ms'; 
 
