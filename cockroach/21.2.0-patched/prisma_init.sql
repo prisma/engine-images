@@ -4,10 +4,9 @@ GRANT admin TO prisma;
 -- Testing only configuration for CockroachDB
 
 -- 21.2.0-patched specific
--- you can enable alter type drop value by running 
-SET enable_drop_enum_value = true;
-
--- 21.2.0-patched specific (removed in 22.1.0)
+-- https://github.com/cockroachdb/cockroach/issues/61594?version=v21.2
+SET CLUSTER SETTTING sql.defaults.drop_enum_value.enabled = true;
+-- (removed in 22.1.0)
 SET CLUSTER SETTING sql.defaults.default_int_size = 4;
 SET CLUSTER SETTING sql.defaults.serial_normalization = 'sql_sequence';
 
