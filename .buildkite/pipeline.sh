@@ -15,7 +15,7 @@ if [[ "$BUILDKITE_BRANCH" == "main" ]]; then
       command: cd musl && make build && make push
       branches: main
 
-    - label: \":rust::darwin: Cross compilation images\"
+    - label: \":rust::darwin::windows: Cross compilation images\"
       command: cd cross && make build && make push
       branches: main
 
@@ -27,7 +27,7 @@ if [[ "$BUILDKITE_BRANCH" == "main" ]]; then
       command: cd release && make build && make push
       branches: main
 
-    - label: \":rust: SQL Server images\"
+    - label: \":mssql: SQL Server images\"
       command: cd sql_server && make build && make push
       branches: main
 
@@ -35,7 +35,7 @@ if [[ "$BUILDKITE_BRANCH" == "main" ]]; then
       command: cd mongo && make build && make push
       branches: main
 
-    - label: \":ant: CockroachDB custom images\"
+    - label: \":cockroach: CockroachDB custom images\"
       command: cd cockroach && make build && make push
       branches: main
   " | buildkite-agent pipeline upload
@@ -51,7 +51,7 @@ else
     - label: \":linux: Musl build images\"
       command: cd musl && make build
 
-    - label: \":rust::darwin: Cross compilation images\"
+    - label: \":rust::darwin::windows: Cross compilation images\"
       command: cd cross && make build
 
     - label: \":rust: Test image\"
@@ -60,13 +60,13 @@ else
     - label: \":rust: Release image\"
       command: cd release && make build
 
-    - label: \":rust: SQL Server images\"
+    - label: \":mssql: SQL Server images\"
       command: cd sql_server && make build
 
     - label: \":mongodb: Mongo single-replica images\"
       command: cd mongo && make build
 
-    - label: \":ant: CockroachDB custom images\"
+    - label: \":cockroach: CockroachDB custom images\"
       command: cd cockroach && make build
   " | buildkite-agent pipeline upload
 fi
