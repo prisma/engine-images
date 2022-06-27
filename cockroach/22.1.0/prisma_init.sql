@@ -3,9 +3,6 @@ GRANT admin TO prisma;
 
 -- Testing only configuration for CockroachDB
 
--- During table backfills, we fill up buffers which have a large default. A lower setting reduces memory usage.
-SET CLUSTER SETTING schemachanger.backfiller.buffer_increment = '128 KiB';
-
 -- Frequent table create/drop creates extra ranges, which we want to merge quickly. In real usage, range merges are rate limited because they require rebalancing
 SET CLUSTER SETTING kv.range_merge.queue_interval = '50ms';
 
