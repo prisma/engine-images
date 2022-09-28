@@ -11,7 +11,4 @@ RUN apt-get -y install llvm
 RUN curl -sSL https://get.docker.com/ | sh
 
 # Install Rust
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
-RUN rustup install nightly
-RUN rustup default stable
-RUN rustup component add clippy
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
