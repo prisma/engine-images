@@ -1,10 +1,10 @@
-FROM debian:buster
+FROM debian:bullseye
 
 # Env variables
 ENV LD_LIBRARY_PATH=/lib:/usr/lib:/usr/include/linux:/lib/x86_64-linux-gnu
 
 # Dependencies
-RUN apt-get update && apt-get -y install wget curl git make build-essential libz-dev libsqlite3-dev openssl libssl-dev pkg-config gzip mingw-w64 libkrb5-dev libgss-dev libclang-dev libc6-dev libclang-common-7-dev software-properties-common clang
+RUN apt-get update && apt-get -y install wget curl git make build-essential libz-dev libsqlite3-dev openssl libssl-dev pkg-config gzip mingw-w64 libkrb5-dev libgss-dev libclang-dev libc6-dev software-properties-common clang
 RUN apt-get -y install llvm
 
 # Install Docker
