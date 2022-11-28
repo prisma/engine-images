@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:bullseye
 
 RUN apt-get update
 RUN apt-get install -y curl wget pkg-config build-essential git zlib1g-dev libkrb5-dev libgss-dev libclang-dev  ca-certificates

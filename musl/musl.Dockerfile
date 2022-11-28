@@ -21,7 +21,7 @@ ARG OPENSSL_VERSION=1.1.1g
 # - https://ftp.postgresql.org/pub/source/
 ARG MDBOOK_VERSION=0.3.7
 ARG CARGO_DENY_VERSION=0.6.6
-ARG ZLIB_VERSION=1.2.12
+ARG ZLIB_VERSION=1.2.13
 ARG POSTGRESQL_VERSION=11.7
 
 # Make sure we have basic dev tools for building C libraries.  Our goal
