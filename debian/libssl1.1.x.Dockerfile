@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM debian:stretch
 
 RUN apt-get update
 RUN apt-get install -y curl wget pkg-config build-essential git zlib1g-dev libkrb5-dev libgss-dev libclang-dev  ca-certificates
@@ -11,12 +11,12 @@ ENV PATH=/root/.cargo/bin:$PATH
 RUN sed '/DST_Root_CA_X3.crt/d' /etc/ca-certificates.conf > /tmp/cacerts.conf && mv /tmp/cacerts.conf /etc/ca-certificates.conf
 RUN update-ca-certificates
 
-RUN wget https://www.openssl.org/source/openssl-1.1.0l.tar.gz
-RUN tar -xf openssl-1.1.0l.tar.gz
-RUN cd openssl-1.1.0l && ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib && make
-# RUN cd openssl-1.1.0l && make test
-RUN cd openssl-1.1.0l && make install
-RUN cd /etc/ld.so.conf.d/ && echo "/usr/local/ssl/lib" > openssl-1.1.0l.conf
+RUN wget https://www.openssl.org/source/openssl-1.1.1s.tar.gz
+RUN tar -xf openssl-1.1.1s.tar.gz
+RUN cd openssl-1.1.1s && ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib && make
+# RUN cd openssl-1.1.1s && make test
+RUN cd openssl-1.1.1s && make install
+RUN cd /etc/ld.so.conf.d/ && echo "/usr/local/ssl/lib" > openssl-1.1.1s.conf
 RUN ldconfig -v
 
 ENV PATH=/usr/local/ssl/bin:$PATH
