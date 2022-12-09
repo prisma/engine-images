@@ -7,5 +7,7 @@ build-3.0.x:
 	docker build --platform linux/amd64 -f libssl3.0.x.Dockerfile -t prismagraphql/build:debian-libssl3.0.x .
 
 push:
+    docker tag prismagraphql/build:debian-libssl1.1.x prismagraphql/build:debian-stretch-libssl1.1.x
 	docker push prismagraphql/build:debian-stretch-libssl1.1.x
+    docker tag prismagraphql/build:debian-libssl3.0.x prismagraphql/build:debian-stretch-libssl3.0.x
 	docker push prismagraphql/build:debian-stretch-libssl3.0.x
