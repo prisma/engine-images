@@ -43,7 +43,7 @@ else
     # Only build images
     echo "steps:
     - label: \":debian: Debian build images\"
-      command: cd debian && make build && make push
+      command: cd debian && make build && make tag && make push
 
     - label: \":rhel: RHEL build images\"
       command: cd rhel && make build
