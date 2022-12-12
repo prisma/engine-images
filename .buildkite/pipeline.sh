@@ -39,7 +39,7 @@ else
     # Only build images
     echo "steps:
     - label: \":rhel: RHEL build images\"
-      command: cd rhel && make build
+      command: cd rhel && make build && make push
 
     - label: \":linux: Musl build images\"
       command: cd musl && make build
