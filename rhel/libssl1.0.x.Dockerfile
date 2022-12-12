@@ -11,12 +11,12 @@ RUN cd openssl-1.0.2u && ./config --prefix=/usr/local/ssl --openssldir=/usr/loca
 RUN cd openssl-1.0.2u && make install
 COPY openssl.sh /etc/profile.d/openssl.sh
 RUN chmod +x /etc/profile.d/openssl.sh
-RUN cd /etc/ld.so.conf.d/ && echo "/usr/local/ssl/lib64" > openssl-1.0.2u.conf
+RUN cd /etc/ld.so.conf.d/ && echo "/usr/local/ssl/lib" > openssl-1.0.2u.conf
 RUN ldconfig -v
 
 ENV PATH=/usr/local/ssl/bin:$PATH
 ENV OPENSSL_DIR /usr/local/ssl
-ENV OPENSSL_LIB_DIR /usr/local/ssl/lib64
+ENV OPENSSL_LIB_DIR /usr/local/ssl/lib
 
 # Install Rust
 RUN curl -sSf https://sh.rustup.rs | sh -s -- -y
