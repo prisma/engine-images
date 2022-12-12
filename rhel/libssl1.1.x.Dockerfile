@@ -3,16 +3,15 @@ FROM centos:7
 RUN yum groupinstall 'Development Tools' -y
 RUN yum install wget git curl perl-core zlib-devel ca-certificates -y
 
-RUN wget -c https://www.openssl.org/source/openssl-1.1.1i.tar.gz
-RUN tar -xzvf openssl-1.1.1i.tar.gz
+RUN wget -c https://www.openssl.org/source/openssl-1.1.1s.tar.gz
+RUN tar -xzvf openssl-1.1.1s.tar.gz
 
-RUN cd openssl-1.1.1i && ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib && make
+RUN cd openssl-1.1.1s && ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib && make
 
-# RUN cd openssl-1.1.1i && make test
-RUN cd openssl-1.1.1i && make install
+RUN cd openssl-1.1.1s && make install
 COPY openssl.sh /etc/profile.d/openssl.sh
 RUN chmod +x /etc/profile.d/openssl.sh
-RUN cd /etc/ld.so.conf.d/ && echo "/usr/local/ssl/lib" > openssl-1.1.1i.conf
+RUN cd /etc/ld.so.conf.d/ && echo "/usr/local/ssl/lib" > openssl-1.1.1s.conf
 RUN ldconfig -v
 
 ENV PATH=/usr/local/ssl/bin:$PATH
