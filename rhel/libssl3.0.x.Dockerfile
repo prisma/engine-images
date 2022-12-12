@@ -3,15 +3,15 @@ FROM centos:7
 RUN yum groupinstall 'Development Tools' -y
 RUN yum install wget git curl perl-core zlib-devel ca-certificates -y
 
-RUN wget -c https://www.openssl.org/source/openssl-3.0.2.tar.gz
-RUN tar -xzvf openssl-3.0.2.tar.gz
+RUN wget -c https://www.openssl.org/source/openssl-3.0.7.tar.gz
+RUN tar -xzvf openssl-3.0.7.tar.gz
 
-RUN cd openssl-3.0.2 && ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib && make
+RUN cd openssl-3.0.7 && ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib && make
 
-RUN cd openssl-3.0.2 && make install
+RUN cd openssl-3.0.7 && make install
 COPY openssl.sh /etc/profile.d/openssl.sh
 RUN chmod +x /etc/profile.d/openssl.sh
-RUN cd /etc/ld.so.conf.d/ && echo "/usr/local/ssl/lib64" > openssl-3.0.2.conf
+RUN cd /etc/ld.so.conf.d/ && echo "/usr/local/ssl/lib64" > openssl-3.0.7.conf
 RUN ldconfig -v
 
 ENV PATH=/usr/local/ssl/bin:$PATH
