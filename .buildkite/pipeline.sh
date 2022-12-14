@@ -42,31 +42,7 @@ if [[ "$BUILDKITE_BRANCH" == "main" ]]; then
 else
     # Only build images
     echo "steps:
-    - label: \":debian: Debian build images\"
-      command: cd debian && make build
-
-    - label: \":rhel: RHEL build images\"
-      command: cd rhel && make build
-
     - label: \":linux: Musl build images\"
-      command: cd musl && make build
-
-    - label: \":rust::darwin::windows: Cross compilation images\"
-      command: cd cross && make build
-
-    - label: \":rust: Test image\"
-      command: cd test && make build
-
-    - label: \":rust: Release image\"
-      command: cd release && make build
-
-    - label: \":mssql: SQL Server images\"
-      command: cd sql_server && make build
-
-    - label: \":mongodb: Mongo single-replica images\"
-      command: cd mongo && make build
-
-    - label: \":cockroach: CockroachDB custom images\"
-      command: cd cockroach && make build
+      command: cd musl && make build && make push
   " | buildkite-agent pipeline upload
 fi
