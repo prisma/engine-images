@@ -10,9 +10,10 @@ RUN apk update && \
 RUN wget -c https://www.openssl.org/source/openssl-1.1.1s.tar.gz
 RUN tar -xzvf openssl-1.1.1s.tar.gz
 
-RUN cd openssl-1.1.1s && ./config --prefix=/usr --openssldir=/usr shared zlib && make -j8
+RUN cd openssl-1.1.1s && ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib && make -j8
 
 RUN cd openssl-1.1.1s && make install
+RUN cd /etc && echo "/usr/local/ssl/lib:/lib:/usr/lib:/usr/local/lib" > ld-musl-x86_64.path
 
-ENV OPENSSL_DIR /usr
-ENV OPENSSL_LIB_DIR /usr/lib
+ENV OPENSSL_DIR /usr/local/ssl
+ENV OPENSSL_LIB_DIR /usr/local/ssl/lib
