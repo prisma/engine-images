@@ -3,9 +3,9 @@
 if [[ "$BUILDKITE_BRANCH" == "main" ]]; then
     # Build & push images
     echo "steps:
-    - label: \":debian: Debian build images\"
-      command: cd debian && make build && make push
-      branches: main
+    # - label: \":debian: Debian build images\"
+    #   command: cd debian && make build && make push
+    #   branches: main
 
     - label: \":rhel: RHEL build images\"
       command: cd rhel && make build && make push
@@ -42,8 +42,8 @@ if [[ "$BUILDKITE_BRANCH" == "main" ]]; then
 else
     # Only build images
     echo "steps:
-    - label: \":debian: Debian build images\"
-      command: cd debian && make build
+    # - label: \":debian: Debian build images\"
+    #   command: cd debian && make build
 
     - label: \":rhel: RHEL build images\"
       command: cd rhel && make build
