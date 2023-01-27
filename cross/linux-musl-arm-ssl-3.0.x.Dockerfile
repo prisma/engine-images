@@ -1,0 +1,70 @@
+FROM debian:bullseye
+
+ENV PATH=/root/.cargo/bin:$PATH
+
+# most steps taken from: https://stackoverflow.com/questions/60821697/how-to-build-openssl-for-arm-linux
+# RUN apt-get update && apt-get -y install wget curl git make build-essential clang libz-dev libsqlite3-dev openssl libssl-dev pkg-config gzip mingw-w64 g++ zlib1g-dev libmpc-dev libmpfr-dev libgmp-dev gcc-aarch64-linux-gnu
+
+# # cross compile OpenSSL
+# # latest version can be found here: https://www.openssl.org/source/
+# ENV OPENSSL_VERSION=openssl-3.0.2
+# ENV DOWNLOAD_SITE=https://www.openssl.org/source
+# RUN wget $DOWNLOAD_SITE/$OPENSSL_VERSION.tar.gz && tar zxf $OPENSSL_VERSION.tar.gz
+# RUN cd $OPENSSL_VERSION && ./Configure linux-aarch64 --cross-compile-prefix=/usr/bin/aarch64-linux-gnu- --prefix=/opt/openssl-arm --openssldir=/opt/openssl-arm -static && make install
+
+# # This env var configures rust-openssl to use the cross compiled version
+# ENV OPENSSL_DIR=/opt/openssl-arm
+
+# # Install Rust
+# RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+# RUN rustup target add aarch64-unknown-linux-gnu
+# RUN rustup component add clippy
+
+# # from rust cross - https://github.com/rust-embedded/cross/blob/master/docker/Dockerfile.aarch64-unknown-linux-gnu#L27
+# ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc
+# ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_RUNNER="/linux-runner aarch64"
+# ENV CC_aarch64_unknown_linux_gnu=aarch64-linux-gnu-gcc
+# ENV CXX_aarch64_unknown_linux_gnu=aarch64-linux-gnu-g++
+# ENV QEMU_LD_PREFIX=/usr/aarch64-linux-gnu
+
+# ----------------
+
+ARG ZLIB_VERSION=1.2.13
+ARG OPENSSL_VERSION=3.0.7
+
+RUN dpkg --add-architecture arm64 && apt-get update
+RUN apt-get -y install curl git build-essential clang-13 \
+    gcc-aarch64-linux-gnu g++-aarch64-linux-gnu musl-dev:arm64
+# binutils-multiarch?
+
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+RUN rustup target add aarch64-unknown-linux-musl
+
+COPY ./aarch64-musl/musl-clang /bin/aarch64-musl-clang
+COPY ./aarch64-musl/musl-gcc /bin/aarch64-musl-gcc
+COPY ./aarch64-musl/musl-g++ /bin/aarch64-musl-g++
+COPY ./aarch64-musl/musl-gcc.specs /lib/aarch64-linux/musl/musl-gcc.specs
+
+ENV CC=aarch64-musl-gcc
+ENV CXX=aarch64-musl-g++
+ENV AR=aarch64-linux-gnu-ar
+ENV AS=aarch64-linux-gnu-as
+ENV RANLIB=aarch64-linux-gnu-ranlib
+
+RUN curl -fLO http://zlib.net/zlib-$ZLIB_VERSION.tar.xz && \
+    tar xJf zlib-$ZLIB_VERSION.tar.xz
+RUN cd zlib-$ZLIB_VERSION && \
+    ./configure --prefix=/opt/cross && \
+    make -j8 && make install
+
+# We configure OpenSSL with -DOPENSSL_NO_SECURE_MEMORY so that we
+# don't need linux headers to build it. It doesn't matter since this
+# is not the library we will use at run time.  Configuring and
+# building zlib support is also not necessary, but it serves as a test
+# that compiler and linker are properly set up to pick our
+# cross-compiled zlib build.
+RUN curl -fLO https://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz && \
+    tar xzf openssl-$OPENSSL_VERSION.tar.gz
+RUN cd openssl-$OPENSSL_VERSION && \
+    ./Configure shared zlib linux-aarch64 --prefix=/opt/cross -DOPENSSL_NO_SECURE_MEMORY && \
+    make -j8 && make install
