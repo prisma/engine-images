@@ -13,7 +13,6 @@ fi
 
 exec clang-13 -target aarch64-linux-musl \
   -fuse-ld=/usr/bin/aarch64-linux-gnu-ld -Wl,-dynamic-linker,/lib/ld-musl-aarch64.so.1 \
-  -nostdinc -isystem /usr/include/aarch64-linux-musl \
-  -nostdlib -nostdlib++ -nodefaultlibs -nostartfiles \
-  -L${LIBPREFIX} $CRT ${LIBPREFIX}/crti.o \
-  "$@" -lc ${GCCLIBPREFIX}/libgcc.a ${LIBPREFIX}/crtn.o
+  -nostdinc -isystem /usr/include/aarch64-linux-musl -isystem  /opt/cross/include \
+  -nostdlib -nostdlib++ -nodefaultlibs -nostartfiles -L${LIBPREFIX} -L/opt/cross/lib \
+  $CRT ${LIBPREFIX}/crti.o "$@" -lc ${GCCLIBPREFIX}/libgcc.a ${LIBPREFIX}/crtn.o

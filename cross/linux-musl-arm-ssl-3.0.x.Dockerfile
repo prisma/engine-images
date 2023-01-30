@@ -1,4 +1,9 @@
-FROM debian:bullseye
+FROM --platform=linux/arm64/v8 alpine AS alpine
+
+# RUN apk add openssl-dev zlib-dev linux-headers
+RUN apk add linux-headers
+
+FROM --platform=linux/amd64 debian:bullseye
 
 ENV PATH=/root/.cargo/bin:$PATH
 
@@ -43,7 +48,7 @@ RUN rustup target add aarch64-unknown-linux-musl
 COPY ./aarch64-musl/musl-clang /bin/aarch64-musl-clang
 COPY ./aarch64-musl/musl-gcc /bin/aarch64-musl-gcc
 COPY ./aarch64-musl/musl-g++ /bin/aarch64-musl-g++
-COPY ./aarch64-musl/musl-gcc.specs /lib/aarch64-linux/musl/musl-gcc.specs
+COPY ./aarch64-musl/musl-gcc.specs /lib/aarch64-linux-musl/musl-gcc.specs
 
 ENV CC=aarch64-musl-gcc
 ENV CXX=aarch64-musl-g++
@@ -51,20 +56,40 @@ ENV AR=aarch64-linux-gnu-ar
 ENV AS=aarch64-linux-gnu-as
 ENV RANLIB=aarch64-linux-gnu-ranlib
 
+RUN mkdir -p /opt/cross/include # /opt/cross/lib
+# COPY --from=alpine /usr/include/openssl /opt/cross/include/openssl
+# COPY --from=alpine /usr/include/zconf.h /opt/cross/include/
+# COPY --from=alpine /usr/include/zlib.h /opt/cross/include/
+# COPY --from=alpine /lib/libz.so* /opt/cross/lib/
+# COPY --from=alpine /lib/libssl.so* /opt/cross/lib/
+# COPY --from=alpine /lib/libcrypto.so* /opt/cross/lib/
+
+COPY --from=alpine /usr/include/linux /opt/cross/include/linux
+COPY --from=alpine /usr/include/asm /opt/cross/include/asm
+COPY --from=alpine /usr/include/asm-generic /opt/cross/include/asm-generic
+
 RUN curl -fLO http://zlib.net/zlib-$ZLIB_VERSION.tar.xz && \
     tar xJf zlib-$ZLIB_VERSION.tar.xz
 RUN cd zlib-$ZLIB_VERSION && \
     ./configure --prefix=/opt/cross && \
     make -j8 && make install
 
-# We configure OpenSSL with -DOPENSSL_NO_SECURE_MEMORY so that we
-# don't need linux headers to build it. It doesn't matter since this
-# is not the library we will use at run time.  Configuring and
-# building zlib support is also not necessary, but it serves as a test
-# that compiler and linker are properly set up to pick our
-# cross-compiled zlib build.
 RUN curl -fLO https://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz && \
     tar xzf openssl-$OPENSSL_VERSION.tar.gz
 RUN cd openssl-$OPENSSL_VERSION && \
-    ./Configure shared zlib linux-aarch64 --prefix=/opt/cross -DOPENSSL_NO_SECURE_MEMORY && \
-    make -j8 && make install
+    # ./Configure shared zlib linux-aarch64 --prefix=/opt/cross --openssldir=/opt/cross -DOPENSSL_NO_SECURE_MEMORY && \
+    ./Configure -static zlib linux-aarch64 --prefix=/opt/cross --openssldir=/opt/cross && \
+    make -j8 && make install_sw install_ssldirs
+
+ENV OPENSSL_DIR=/opt/cross
+
+# Unset variables used during cross-compilation
+# ENV CC=
+# ENV CXX=
+# ENV AR=
+# ENV AS=
+# ENV RANLIB=
+
+ENV RUSTFLAGS="-C target-feature=-crt-static -C linker=/bin/aarch64-musl-clang"
+ENV CC_aarch64_unknown_linux_musl=aarch64-musl-gcc
+ENV CXX_aarch64_unknown_linux_musl=aarch64-musl-g++
