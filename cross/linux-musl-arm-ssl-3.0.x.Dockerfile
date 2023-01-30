@@ -83,12 +83,23 @@ RUN cd openssl-$OPENSSL_VERSION && \
 
 ENV OPENSSL_DIR=/opt/cross
 
-# Unset variables used during cross-compilation
-# ENV CC=
-# ENV CXX=
-# ENV AR=
-# ENV AS=
-# ENV RANLIB=
+# Unset variables used during cross-compilation of zlib and
+# openssl. `CC_aarch64_unknown_linux_musl` and
+# `CXX_aarch64_unknown_linux_musl`, which are necessary for
+# cross-compilation of C code in sys crates, are set below
+# instead. When CC/CXX are used there, they are actually used to
+# compile temporary binaries to run on the host system during the
+# build, so using a cross compiler there is not something we want. The
+# meaning of these variables may vary, so sometimes it may be easier
+# to use the cross compiler for everything and set up QEMU usermode
+# emulation with binfmt_misc to run the non-native binaries at build
+# time -- consider this if issues like a wrong compiler being used
+# arise with new dependencies in the future.
+ENV CC=
+ENV CXX=
+ENV AR=
+ENV AS=
+ENV RANLIB=
 
 ENV RUSTFLAGS="-C target-feature=-crt-static -C linker=/bin/aarch64-musl-clang"
 ENV CC_aarch64_unknown_linux_musl=aarch64-musl-gcc
