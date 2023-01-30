@@ -1,4 +1,4 @@
-build: build-darwin build-windows build-linux-arm-ssl-1.0.x build-linux-arm-ssl-1.1.x build-linux-arm-ssl-3.0.x
+build: build-darwin build-windows build-linux-arm-ssl-1.0.x build-linux-arm-ssl-1.1.x build-linux-arm-ssl-3.0.x build-linux-musl-arm-ssl-1.1.x build-linux-musl-arm-ssl-3.0.x
 
 build-darwin:
 	docker build --platform linux/amd64 -f darwin.Dockerfile -t prismagraphql/build:cross-darwin .
