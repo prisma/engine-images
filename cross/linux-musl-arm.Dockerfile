@@ -8,10 +8,10 @@ FROM --platform=linux/arm64/v8 alpine AS alpine
 # This one step runs in emulation, that's why we use "docker buildx build" in
 # Makefile to ensure BuildKit is enabled. Optimally we would've just used the
 # linux-musl-dev:arm64 package in debian, but it doesn't seem to exist anymore
-# althogh it's referenced by other packages, so using the multi-stage image like
+# although it's referenced by other packages, so using a multi-stage image like
 # this seems to be the easiest option. An alternative would've been to download
 # the linux source tarball and grab the headers from there, or download the
-# normal arm64 linux headers package in Debian and manually unpack it it without
+# normal arm64 linux headers package in Debian and manually unpack it without
 # installing.
 RUN apk add linux-headers
 
@@ -79,10 +79,9 @@ ENV OPENSSL_DIR=/opt/cross
 # below instead. When CC/CXX are used there, they are actually used to compile
 # temporary binaries to run on the host system during the build, so using a
 # cross compiler there is not something we currently want. Sometimes though it
-# might be be easier to use the cross compiler for everything though and set up
-# QEMU usermode emulation with binfmt_misc to run the non-native binaries at
-# build time -- consider this if issues with new dependencies arise in the
-# future.
+# might be be easier to use the cross compiler for everything and set up QEMU
+# usermode emulation with binfmt_misc to run the non-native binaries at build
+# time -- consider this if issues with new dependencies arise in the future.
 ENV CC=
 ENV CXX=
 ENV AR=
