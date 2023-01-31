@@ -52,7 +52,7 @@ else
       command: cd musl && make build
 
     - label: \":rust::darwin::windows: Cross compilation images\"
-      command: cd cross && make build
+      command: cd cross && make build && make push
 
     - label: \":rust: Test image\"
       command: cd test && make build
