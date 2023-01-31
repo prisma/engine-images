@@ -73,20 +73,19 @@ RUN if [ "$OPENSSL_VARIANT" = "3.0.x" ]; then \
 
 ENV OPENSSL_DIR=/opt/cross
 
-# Unset variables used during cross-compilation of zlib and
+# Unset CC and CXX variables used during cross-compilation of zlib and
 # openssl. `CC_aarch64_unknown_linux_musl` and `CXX_aarch64_unknown_linux_musl`,
 # which are necessary for cross-compilation of C code in sys crates, are set
-# below instead. When CC/CXX are used there, they are actually used to compile
-# temporary binaries to run on the host system during the build, so using a
-# cross compiler there is not something we currently want. Sometimes though it
-# might be be easier to use the cross compiler for everything and set up QEMU
-# usermode emulation with binfmt_misc to run the non-native binaries at build
-# time -- consider this if issues with new dependencies arise in the future.
+# below instead. CC/CXX are used by some crates to compile temporary binaries to
+# run on the host system during the build, so using a cross compiler there is
+# not something we currently want. However, AR, for example, is used by `ring`
+# to prepare a library for the target system, so we don't reset it here. This
+# could need more fiddling if more C libraries are introduced in dependencies.
+# At some point, though, it might possibly be easier to use the cross compilers
+# for everything and set up QEMU usermode emulation with binfmt_misc to run the
+# non-native binaries at build time.
 ENV CC=
 ENV CXX=
-ENV AR=
-ENV AS=
-ENV RANLIB=
 
 ENV RUSTFLAGS="-C target-feature=-crt-static -C linker=/bin/aarch64-musl-clang"
 ENV CC_aarch64_unknown_linux_musl=aarch64-musl-gcc
