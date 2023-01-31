@@ -11,7 +11,7 @@ FROM --platform=linux/arm64/v8 alpine AS alpine
 # althogh it's referenced by other packages, so using the multi-stage image like
 # this seems to be the easiest option. An alternative would've been to download
 # the linux source tarball and grab the headers from there, or download the
-# normal arm64 linux header package in Debian and manually unpack it it without
+# normal arm64 linux headers package in Debian and manually unpack it it without
 # installing.
 RUN apk add linux-headers
 
