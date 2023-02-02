@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -eu
+
+LIBPREFIX=/usr/lib/aarch64-linux-musl
+GCCLIBPREFIX=/usr/lib/gcc-cross/aarch64-linux-gnu/10
+
+if echo " $@" | fgrep -q -- ' -pie'; then
+  CRT=${LIBPREFIX}/Scrt1.o
+else
+  CRT=${LIBPREFIX}/crt1.o
+fi
+
+exec clang-13 -target aarch64-linux-musl \
+  -fuse-ld=/usr/bin/aarch64-linux-gnu-ld -Wl,-dynamic-linker,/lib/ld-musl-aarch64.so.1 \
+  -nostdinc -isystem /usr/include/aarch64-linux-musl -isystem  /opt/cross/include \
+  -nostdlib -nostdlib++ -nodefaultlibs -nostartfiles -L${LIBPREFIX} -L/opt/cross/lib \
+  $CRT ${LIBPREFIX}/crti.o "$@" -lc ${GCCLIBPREFIX}/libgcc.a ${LIBPREFIX}/crtn.o

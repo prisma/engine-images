@@ -1,4 +1,4 @@
-build: build-darwin build-windows build-linux-arm-ssl-1.0.x build-linux-arm-ssl-1.1.x build-linux-arm-ssl-3.0.x
+build: build-darwin build-windows build-linux-arm-ssl-1.0.x build-linux-arm-ssl-1.1.x build-linux-arm-ssl-3.0.x build-linux-musl-arm-ssl-1.1.x build-linux-musl-arm-ssl-3.0.x
 
 build-darwin:
 	docker build --platform linux/amd64 -f darwin.Dockerfile -t prismagraphql/build:cross-darwin .
@@ -15,9 +15,17 @@ build-linux-arm-ssl-1.1.x:
 build-linux-arm-ssl-3.0.x:
 	docker build --platform linux/amd64 -f linux-arm-ssl-3.0.x.Dockerfile -t prismagraphql/build:cross-linux-arm-ssl-3.0.x .
 
+build-linux-musl-arm-ssl-1.1.x:
+	docker buildx build --platform linux/amd64 -f linux-musl-arm.Dockerfile --build-arg OPENSSL_VARIANT=1.1.x -t prismagraphql/build:cross-linux-musl-arm-ssl-1.1.x .
+
+build-linux-musl-arm-ssl-3.0.x:
+	docker buildx build --platform linux/amd64 -f linux-musl-arm.Dockerfile --build-arg OPENSSL_VARIANT=3.0.x -t prismagraphql/build:cross-linux-musl-arm-ssl-3.0.x .
+
 push:
 	docker push prismagraphql/build:cross-windows
 	docker push prismagraphql/build:cross-darwin
 	docker push prismagraphql/build:cross-linux-arm-ssl-1.1.x
 	docker push prismagraphql/build:cross-linux-arm-ssl-1.0.x
 	docker push prismagraphql/build:cross-linux-arm-ssl-3.0.x
+	docker push prismagraphql/build:cross-linux-musl-arm-ssl-1.1.x
+	docker push prismagraphql/build:cross-linux-musl-arm-ssl-3.0.x
