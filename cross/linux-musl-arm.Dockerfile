@@ -51,8 +51,8 @@ RUN cd zlib-$ZLIB_VERSION && \
     ./configure --prefix=/opt/cross && \
     make -j8 && make install
 
-ARG OPENSSL_1_1_VERSION=1.1.1s
-ARG OPENSSL_3_0_VERSION=3.0.7
+ARG OPENSSL_1_1_VERSION=1.1.1t
+ARG OPENSSL_3_0_VERSION=3.0.8
 
 # Accepts 1.1.x or 3.0.x as a build arg
 ARG OPENSSL_VARIANT=3.0.x
