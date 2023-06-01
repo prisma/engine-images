@@ -49,7 +49,7 @@ else
       command: cd musl && make build
 
     - label: \":linux: Musl (static) build images\"
-      command: cd linux-static && make build
+      command: cd linux-static && make build && make push
 
     - label: \":rust::darwin::windows: Cross compilation images\"
       command: cd cross && make build
