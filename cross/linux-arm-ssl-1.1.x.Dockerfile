@@ -7,7 +7,7 @@ RUN apt-get update && apt-get -y install wget curl git make build-essential clan
 
 # cross compile OpenSSL
 # latest version can be found here: https://www.openssl.org/source/
-ENV OPENSSL_VERSION=openssl-1.1.1h
+ENV OPENSSL_VERSION=openssl-1.1.1t
 ENV DOWNLOAD_SITE=https://www.openssl.org/source
 RUN wget $DOWNLOAD_SITE/$OPENSSL_VERSION.tar.gz && tar zxf $OPENSSL_VERSION.tar.gz
 RUN cd $OPENSSL_VERSION && ./Configure linux-aarch64 --cross-compile-prefix=/usr/bin/aarch64-linux-gnu- --prefix=/opt/openssl-arm --openssldir=/opt/openssl-arm -static && make install
