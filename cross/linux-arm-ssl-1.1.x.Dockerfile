@@ -3,6 +3,9 @@ FROM debian:stretch
 
 ENV PATH=/root/.cargo/bin:$PATH
 
+RUN echo 'deb http://archive.debian.org/debian stretch main' > /etc/apt/sources.list
+RUN echo 'deb http://archive.debian.org/debian-security stretch/updates main' >> /etc/apt/sources.list
+
 RUN apt-get update && apt-get -y install wget curl git make build-essential clang libz-dev libsqlite3-dev openssl libssl-dev pkg-config gzip mingw-w64 g++ zlib1g-dev libmpc-dev libmpfr-dev libgmp-dev gcc-aarch64-linux-gnu
 
 # cross compile OpenSSL
