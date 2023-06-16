@@ -7,8 +7,12 @@ if [[ "$BUILDKITE_BRANCH" == "main" ]]; then
       command: cd rhel && make build && make push
       branches: main
 
-    - label: \":linux: Musl build images\"
+    - label: \":linux: Musl (dynamic) build images\"
       command: cd musl && make build && make push
+      branches: main
+
+    - label: \":linux: Musl (static) build images\"
+      command: cd linux-static && make build && make push
       branches: main
 
     - label: \":rust::darwin::windows: Cross compilation images\"
@@ -41,8 +45,11 @@ else
     - label: \":linux: Glibc build images\"
       command: cd rhel && make build
 
-    - label: \":linux: Musl build images\"
+    - label: \":linux: Musl (dynamic) build images\"
       command: cd musl && make build
+
+    - label: \":linux: Musl (static) build images\"
+      command: cd linux-static && make build
 
     - label: \":rust::darwin::windows: Cross compilation images\"
       command: cd cross && make build
