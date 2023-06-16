@@ -42,13 +42,13 @@ if [[ "$BUILDKITE_BRANCH" == "main" ]]; then
 else
     # Only build images
     echo "steps:
-    - label: \":linux: Linux Glibc build images\"
+    - label: \":linux: Glibc build images\"
       command: cd rhel && make build
 
-    - label: \":linux: Linux Musl (dynamic) build images\"
+    - label: \":linux: Musl (dynamic) build images\"
       command: cd musl && make build
 
-    - label: \":linux: Linux Musl (static) build images\"
+    - label: \":linux: Musl (static) build images\"
       command: cd linux-static && make build
 
     - label: \":rust::darwin::windows: Cross compilation images\"
