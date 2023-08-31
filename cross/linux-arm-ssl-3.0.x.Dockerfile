@@ -10,10 +10,14 @@ RUN apt-get update && apt-get -y install wget curl git make build-essential clan
 
 # cross compile OpenSSL
 # latest version can be found here: https://www.openssl.org/source/
-ENV OPENSSL_VERSION=openssl-3.0.8
+ENV OPENSSL_VERSION=openssl-3.0.10
 ENV DOWNLOAD_SITE=https://www.openssl.org/source
 RUN wget $DOWNLOAD_SITE/$OPENSSL_VERSION.tar.gz && tar zxf $OPENSSL_VERSION.tar.gz
-RUN cd $OPENSSL_VERSION && ./Configure linux-aarch64 --cross-compile-prefix=/usr/bin/aarch64-linux-gnu- --prefix=/opt/openssl-arm --openssldir=/opt/openssl-arm -static && make install
+RUN cd $OPENSSL_VERSION && \
+    ./Configure linux-aarch64 --cross-compile-prefix=/usr/bin/aarch64-linux-gnu- \
+        --prefix=/opt/openssl-arm --openssldir=/opt/openssl-arm \
+        shared no-tests no-comp no-zlib no-zlib-dynamic && \
+    make -j$(nproc) && make install_sw install_ssldirs
 
 # This env var configures rust-openssl to use the cross compiled version
 ENV OPENSSL_DIR=/opt/openssl-arm
