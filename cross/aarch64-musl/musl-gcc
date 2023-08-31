@@ -1,2 +1,0 @@
-#!/bin/sh
-exec aarch64-linux-gnu-gcc "$@" -specs /lib/aarch64-linux-musl/musl-gcc.specs
