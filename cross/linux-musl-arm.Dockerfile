@@ -21,7 +21,6 @@ RUN cd /tmp && \
     export CFLAGS="-fPIC -g1" && \
     export TARGET=aarch64-unknown-linux-musl && \
     make -j$(nproc) && make install && \
-    ln -s /opt/cross/bin/aarch64-unknown-linux-musl-strip /opt/cross/bin/musl-strip && \
     cd /tmp && rm -rf /tmp/musl-cross-make
 
 ARG OPENSSL_1_1_VERSION=1.1.1v
