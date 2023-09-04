@@ -1,61 +1,35 @@
-# Use the ZLIB_VERSION, OPENSSL_1_1_VERSION, OPENSSL_3_0_VERSION and
-# OPENSSL_VARIANT build args to configure the image. See their definitions and
-# the default values below in the file -- they are defined right before usage
-# for better caching of layers.
+# Use the OPENSSL_1_1_VERSION, OPENSSL_3_0_VERSION and OPENSSL_VARIANT build
+# args to configure the image. See their definitions and the default values
+# below in the file -- they are defined right before usage for better caching
+# of layers.
 
-FROM --platform=linux/arm64/v8 alpine AS alpine
+FROM debian:bookworm
 
-# This one step runs in emulation, that's why we use "docker buildx build" in
-# Makefile to ensure BuildKit is enabled. Optimally we would've just used the
-# linux-musl-dev:arm64 package in debian, but it doesn't seem to exist anymore
-# although it's referenced by other packages, so using a multi-stage image like
-# this seems to be the easiest option. An alternative would've been to download
-# the linux source tarball and grab the headers from there, or download the
-# normal arm64 linux headers package in Debian and manually unpack it without
-# installing.
-RUN apk add linux-headers
+ENV PATH=/root/.cargo/bin:/opt/cross/bin:$PATH
 
-FROM --platform=linux/amd64 debian:bullseye
+RUN apt-get update && \
+    apt-get install -y build-essential curl file git bison flex
 
-ENV PATH=/root/.cargo/bin:$PATH
+COPY ./aarch64-musl/config.mak /tmp/config.mak
 
-RUN dpkg --add-architecture arm64 && apt-get update
-RUN apt-get -y install curl git build-essential clang-13 \
-    gcc-aarch64-linux-gnu g++-aarch64-linux-gnu musl-dev:arm64
+# Build cross-compiling toolchain using https://github.com/richfelker/musl-cross-make,
+# similar to https://github.com/rust-cross/rust-musl-cross
+RUN cd /tmp && \
+    git clone --depth 1 https://github.com/richfelker/musl-cross-make.git && \
+    cp /tmp/config.mak /tmp/musl-cross-make/config.mak && \
+    cd /tmp/musl-cross-make && \
+    export CFLAGS="-fPIC -g1" && \
+    export TARGET=aarch64-unknown-linux-musl && \
+    make -j$(nproc) && make install && \
+    cd /tmp && rm -rf /tmp/musl-cross-make
 
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
-RUN rustup target add aarch64-unknown-linux-musl
-
-COPY ./aarch64-musl/musl-clang /bin/aarch64-musl-clang
-COPY ./aarch64-musl/musl-gcc /bin/aarch64-musl-gcc
-COPY ./aarch64-musl/musl-g++ /bin/aarch64-musl-g++
-COPY ./aarch64-musl/musl-gcc.specs /lib/aarch64-linux-musl/musl-gcc.specs
-
-ENV CC=aarch64-musl-gcc
-ENV CXX=aarch64-musl-g++
-ENV AR=aarch64-linux-gnu-ar
-ENV AS=aarch64-linux-gnu-as
-ENV RANLIB=aarch64-linux-gnu-ranlib
-
-RUN mkdir -p /opt/cross/include
-
-COPY --from=alpine /usr/include/linux /opt/cross/include/linux
-COPY --from=alpine /usr/include/asm /opt/cross/include/asm
-COPY --from=alpine /usr/include/asm-generic /opt/cross/include/asm-generic
-
-ARG ZLIB_VERSION=1.2.13
-
-RUN curl -fLO http://zlib.net/zlib-$ZLIB_VERSION.tar.xz && \
-    tar xJf zlib-$ZLIB_VERSION.tar.xz
-RUN cd zlib-$ZLIB_VERSION && \
-    ./configure --prefix=/opt/cross && \
-    make -j8 && make install
-
-ARG OPENSSL_1_1_VERSION=1.1.1t
-ARG OPENSSL_3_0_VERSION=3.0.8
+ARG OPENSSL_1_1_VERSION=1.1.1v
+ARG OPENSSL_3_0_VERSION=3.0.10
 
 # Accepts 1.1.x or 3.0.x as a build arg
 ARG OPENSSL_VARIANT=3.0.x
+
+ENV OPENSSL_DIR=/opt/cross
 
 RUN if [ "$OPENSSL_VARIANT" = "3.0.x" ]; then \
         OPENSSL_VERSION="$OPENSSL_3_0_VERSION"; \
@@ -65,28 +39,22 @@ RUN if [ "$OPENSSL_VARIANT" = "3.0.x" ]; then \
         >&2 echo "wrong openssl variant: $OPENSSL_VARIANT"; \
         exit 1; \
     fi && \
+    cd /tmp && \
     curl -fLO https://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz && \
     tar xzf openssl-$OPENSSL_VERSION.tar.gz && \
     cd openssl-$OPENSSL_VERSION && \
-    ./Configure -static zlib linux-aarch64 --prefix=/opt/cross --openssldir=/opt/cross && \
-    make -j8 && make install_sw install_ssldirs
+    ./Configure linux-aarch64 --cross-compile-prefix=aarch64-unknown-linux-musl- \
+        --prefix=$OPENSSL_DIR --openssldir=$OPENSSL_DIR \
+        shared no-tests no-comp no-zlib no-zlib-dynamic && \
+    make -j$(nproc) && make install_sw install_ssldirs && \
+    cd /tmp && rm -rf /tmp/openssl-$OPENSSL_VERSION
 
-ENV OPENSSL_DIR=/opt/cross
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+RUN rustup target add aarch64-unknown-linux-musl
 
-# Unset CC and CXX variables used during cross-compilation of zlib and
-# openssl. `CC_aarch64_unknown_linux_musl` and `CXX_aarch64_unknown_linux_musl`,
-# which are necessary for cross-compilation of C code in sys crates, are set
-# below instead. CC/CXX are used by some crates to compile temporary binaries to
-# run on the host system during the build, so using a cross compiler there is
-# not something we currently want. However, AR, for example, is used by `ring`
-# to prepare a library for the target system, so we don't reset it here. This
-# could need more fiddling if more C libraries are introduced in dependencies.
-# At some point, though, it might possibly be easier to use the cross compilers
-# for everything and set up QEMU usermode emulation with binfmt_misc to run the
-# non-native binaries at build time.
-ENV CC=
-ENV CXX=
+RUN echo '[target.aarch64-unknown-linux-musl]' > /root/.cargo/config && \
+    echo 'linker = "aarch64-unknown-linux-musl-gcc"' >> /root/.cargo/config
 
-ENV RUSTFLAGS="-C target-feature=-crt-static -C linker=/bin/aarch64-musl-clang"
-ENV CC_aarch64_unknown_linux_musl=aarch64-musl-gcc
-ENV CXX_aarch64_unknown_linux_musl=aarch64-musl-g++
+ENV RUSTFLAGS="-C target-feature=-crt-static"
+ENV CC_aarch64_unknown_linux_musl=aarch64-unknown-linux-musl-gcc
+ENV CXX_aarch64_unknown_linux_musl=aarch64-unknown-linux-musl-g++
