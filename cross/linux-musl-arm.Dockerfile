@@ -3,7 +3,7 @@
 # below in the file -- they are defined right before usage for better caching
 # of layers.
 
-FROM --platform=linux/amd64 debian:bookworm
+FROM debian:bookworm
 
 ENV PATH=/root/.cargo/bin:/opt/cross/bin:$PATH
 

@@ -16,10 +16,10 @@ build-linux-arm-ssl-3.0.x:
 	docker build --platform linux/amd64 -f linux-arm-ssl-3.0.x.Dockerfile -t prismagraphql/build:cross-linux-arm-ssl-3.0.x .
 
 build-linux-musl-arm-ssl-1.1.x:
-	docker buildx build --platform linux/amd64 -f linux-musl-arm.Dockerfile --build-arg OPENSSL_VARIANT=1.1.x -t prismagraphql/build:cross-linux-musl-arm-ssl-1.1.x .
+	docker build -f linux-musl-arm.Dockerfile --build-arg OPENSSL_VARIANT=1.1.x -t prismagraphql/build:cross-linux-musl-arm-ssl-1.1.x .
 
 build-linux-musl-arm-ssl-3.0.x:
-	docker buildx build --platform linux/amd64 -f linux-musl-arm.Dockerfile --build-arg OPENSSL_VARIANT=3.0.x -t prismagraphql/build:cross-linux-musl-arm-ssl-3.0.x .
+	docker build -f linux-musl-arm.Dockerfile --build-arg OPENSSL_VARIANT=3.0.x -t prismagraphql/build:cross-linux-musl-arm-ssl-3.0.x .
 
 push:
 	docker push prismagraphql/build:cross-windows
