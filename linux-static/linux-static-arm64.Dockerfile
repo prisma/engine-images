@@ -11,7 +11,7 @@ COPY ./aarch64-musl-config.mak /tmp/config.mak
 # https://github.com/rust-cross/rust-musl-cross.
 # See also `../cross/linux-musl-arm.Dockerfile`.
 RUN cd /tmp && \
-    git clone --depth 1 https://github.com/richfelker/musl-cross-make.git && \
+    git clone --depth 1 https://github.com/richfelker/musl-cross-make.git --branch v0.9.10 && \
     cp /tmp/config.mak /tmp/musl-cross-make/config.mak && \
     cd /tmp/musl-cross-make && \
     export CFLAGS="-fPIC -g1" && \
