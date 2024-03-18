@@ -15,7 +15,7 @@ COPY ./aarch64-musl/config.mak /tmp/config.mak
 # Build cross-compiling toolchain using https://github.com/richfelker/musl-cross-make,
 # similar to https://github.com/rust-cross/rust-musl-cross
 RUN cd /tmp && \
-    git clone --depth 1 https://github.com/richfelker/musl-cross-make.git && \
+    git clone --depth 1 https://github.com/richfelker/musl-cross-make.git --branch v0.9.10 && \
     cp /tmp/config.mak /tmp/musl-cross-make/config.mak && \
     cd /tmp/musl-cross-make && \
     export CFLAGS="-fPIC -g1" && \

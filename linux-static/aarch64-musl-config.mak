@@ -15,7 +15,7 @@ DL_CMD = curl -C - -L -o
 # Recommended options for smaller build for deploying binaries.
 COMMON_CONFIG += CFLAGS="-g0 -Os -w" CXXFLAGS="-g0 -Os -w" LDFLAGS="-s"
 
-# Disable gcc features we don't need for a smaller and faster build.
+# Disable gcc features we don't need for a simpler and faster build.
 COMMON_CONFIG += --disable-nls
 GCC_CONFIG += --enable-languages=c,c++
 GCC_CONFIG += --disable-libquadmath --disable-decimal-float
