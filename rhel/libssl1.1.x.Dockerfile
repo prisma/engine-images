@@ -1,4 +1,4 @@
-FROM centos:7
+FROM amazonlinux:1
 
 RUN yum groupinstall 'Development Tools' -y
 RUN yum install wget git curl perl-core zlib-devel ca-certificates -y
