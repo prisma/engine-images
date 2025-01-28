@@ -15,9 +15,13 @@ build-23.1.13:
 build-23.2.0:
 	docker build -t prismagraphql/cockroachdb-custom:23.2.0  ./23.2.0
 
+build-24.3.3:
+	docker build -t prismagraphql/cockroachdb-custom:24.3.3  ./24.3.3
+
 push:
 	docker push prismagraphql/cockroachdb-custom:22.1.0
 	docker push prismagraphql/cockroachdb-custom:22.2
 	docker push prismagraphql/cockroachdb-custom:23.1
 	docker push prismagraphql/cockroachdb-custom:23.1.13
 	docker push prismagraphql/cockroachdb-custom:23.2.0
+	docker push prismagraphql/cockroachdb-custom:24.3.3
