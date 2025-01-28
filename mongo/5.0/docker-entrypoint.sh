@@ -271,6 +271,8 @@ if [ "$originalArgOne" = 'mongod' ]; then
 		done
 	fi
 
+	mongo=( mongo --host 127.0.0.1 --port $port --quiet )
+
 	if [ -n "$shouldPerformInitdb" ]; then
 		mongodHackedArgs=( "$@" )
 		if _parse_config "$@"; then
@@ -321,7 +323,6 @@ if [ "$originalArgOne" = 'mongod' ]; then
 
 		"${mongodHackedArgs[@]}" --fork
 
-		mongo=( mongo --host 127.0.0.1 --port $port --quiet )
 
 		# check to see that our "mongod" actually did start up (catches "--help", "--version", MongoDB 3.2 being silly, slow prealloc, etc)
 		# https://jira.mongodb.org/browse/SERVER-16292
