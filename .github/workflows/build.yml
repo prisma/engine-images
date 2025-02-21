@@ -1,0 +1,68 @@
+name: "Build the images, also push them if merged on main"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      max-parallel: 3
+      matrix:
+        target:
+#          - { directory: rhel, label: ":linux: Glibc build images" }
+#          - { directory: musl, label: ":linux: Musl (dynamic) build images" }
+          - { directory: linux-static, label: ":linux: Musl (static) build images" }
+#          - { directory: cross, label: ":rust::darwin::windows: Cross compilation images" }
+#          - { directory: test, label: ":rust: Test image" }
+#          - { directory: release, label: ":rust: Release image" }
+#          - { directory: sql_server, label: ":mssql: SQL Server images" }
+#          - { directory: mongo, label: ":mongodb: Mongo single-replica images" }
+#          - { directory: cockroach, label: ":cockroach: CockroachDB custom images" }
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Build ${{matrix.target.label}}"
+        env:
+          DOCKER_HUB_TOKEN: ${{secrets.DOCKER_HUB_TOKEN}}
+        run: |
+          echo "Building ${{matrix.target.label}}"
+          cd "${{matrix.target.directory}}"
+          make build
+
+  push:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      max-parallel: 3
+      matrix:
+        target:
+#          - { directory: rhel, label: ":linux: Glibc build images" }
+#          - { directory: musl, label: ":linux: Musl (dynamic) build images" }
+          - { directory: linux-static, label: ":linux: Musl (static) build images" }
+#          - { directory: cross, label: ":rust::darwin::windows: Cross compilation images" }
+#          - { directory: test, label: ":rust: Test image" }
+#          - { directory: release, label: ":rust: Release image" }
+#          - { directory: sql_server, label: ":mssql: SQL Server images" }
+#          - { directory: mongo, label: ":mongodb: Mongo single-replica images" }
+#          - { directory: cockroach, label: ":cockroach: CockroachDB custom images" }
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Build and push ${{matrix.target.label}}"
+        env:
+          DOCKER_HUB_TOKEN: ${{secrets.DOCKER_HUB_TOKEN}}
+        run: |
+          echo "Building and pushing ${{matrix.target.label}}"
+          cd "${{matrix.target.directory}}"
+          make build
+          echo "$DOCKER_HUB_TOKEN" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
+          make push
