@@ -14,15 +14,15 @@ jobs:
       max-parallel: 3
       matrix:
         target:
-#          - { directory: rhel, label: ":linux: Glibc build images" }
-#          - { directory: musl, label: ":linux: Musl (dynamic) build images" }
-          - { directory: linux-static, label: ":linux: Musl (static) build images" }
-#          - { directory: cross, label: ":rust::darwin::windows: Cross compilation images" }
-#          - { directory: test, label: ":rust: Test image" }
-#          - { directory: release, label: ":rust: Release image" }
-#          - { directory: sql_server, label: ":mssql: SQL Server images" }
-#          - { directory: mongo, label: ":mongodb: Mongo single-replica images" }
-#          - { directory: cockroach, label: ":cockroach: CockroachDB custom images" }
+          - { directory: rhel, label: "🐧 Glibc build images" }
+          - { directory: musl, label: "🐧 Musl (dynamic) build images" }
+          - { directory: linux-static, label: "🐧 Musl (static) build images" }
+          - { directory: cross, label: "🦀🍏🖥️ Cross compilation images" }
+          - { directory: test, label: "🦀 Test image" }
+          - { directory: release, label: "🦀 Release image" }
+          - { directory: sql_server, label: "🛢️ SQL Server images" }
+          - { directory: mongo, label: "🍃 Mongo single-replica images" }
+          - { directory: cockroach, label: "🪳 CockroachDB custom images" }
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
@@ -44,15 +44,15 @@ jobs:
       max-parallel: 3
       matrix:
         target:
-#          - { directory: rhel, label: ":linux: Glibc build images" }
-#          - { directory: musl, label: ":linux: Musl (dynamic) build images" }
-          - { directory: linux-static, label: ":linux: Musl (static) build images" }
-#          - { directory: cross, label: ":rust::darwin::windows: Cross compilation images" }
-#          - { directory: test, label: ":rust: Test image" }
-#          - { directory: release, label: ":rust: Release image" }
-#          - { directory: sql_server, label: ":mssql: SQL Server images" }
-#          - { directory: mongo, label: ":mongodb: Mongo single-replica images" }
-#          - { directory: cockroach, label: ":cockroach: CockroachDB custom images" }
+          - { directory: rhel, label: "🐧 Glibc build images" }
+          - { directory: musl, label: "🐧 Musl (dynamic) build images" }
+          - { directory: linux-static, label: "🐧 Musl (static) build images" }
+          - { directory: cross, label: "🦀🍏🖥️ Cross compilation images" }
+          - { directory: test, label: "🦀 Test image" }
+          - { directory: release, label: "🦀 Release image" }
+          - { directory: sql_server, label: "🛢️ SQL Server images" }
+          - { directory: mongo, label: "🍃 Mongo single-replica images" }
+          - { directory: cockroach, label: "🪳 CockroachDB custom images" }
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
