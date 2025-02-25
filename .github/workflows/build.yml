@@ -1,0 +1,68 @@
+name: "Build the images, also push them if merged on main"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      max-parallel: 9
+      matrix:
+        target:
+          - { directory: rhel, label: "🐧 Glibc build images" }
+          - { directory: musl, label: "🐧 Musl (dynamic) build images" }
+          - { directory: linux-static, label: "🐧 Musl (static) build images" }
+          - { directory: cross, label: "🦀🍏🖥️ Cross compilation images" }
+          - { directory: test, label: "🦀 Test image" }
+          - { directory: release, label: "🦀 Release image" }
+          - { directory: sql_server, label: "🛢️ SQL Server images" }
+          - { directory: mongo, label: "🍃 Mongo single-replica images" }
+          - { directory: cockroach, label: "🪳 CockroachDB custom images" }
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Build ${{matrix.target.label}}"
+        env:
+          DOCKER_HUB_TOKEN: ${{secrets.DOCKER_HUB_TOKEN}}
+        run: |
+          echo "Building ${{matrix.target.label}}"
+          cd "${{matrix.target.directory}}"
+          make build
+
+  push:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      max-parallel: 9
+      matrix:
+        target:
+          - { directory: rhel, label: "🐧 Glibc build images" }
+          - { directory: musl, label: "🐧 Musl (dynamic) build images" }
+          - { directory: linux-static, label: "🐧 Musl (static) build images" }
+          - { directory: cross, label: "🦀🍏🖥️ Cross compilation images" }
+          - { directory: test, label: "🦀 Test image" }
+          - { directory: release, label: "🦀 Release image" }
+          - { directory: sql_server, label: "🛢️ SQL Server images" }
+          - { directory: mongo, label: "🍃 Mongo single-replica images" }
+          - { directory: cockroach, label: "🪳 CockroachDB custom images" }
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Build and push ${{matrix.target.label}}"
+        env:
+          DOCKER_HUB_TOKEN: ${{secrets.DOCKER_HUB_TOKEN}}
+        run: |
+          echo "Building and pushing ${{matrix.target.label}}"
+          cd "${{matrix.target.directory}}"
+          make build
+          echo "$DOCKER_HUB_TOKEN" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
+          make push
