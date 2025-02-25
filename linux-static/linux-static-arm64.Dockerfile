@@ -5,6 +5,18 @@ ENV PATH=/root/.cargo/bin:/opt/cross/bin:$PATH
 RUN apt-get update && \
     apt-get install -y build-essential curl file git bison flex
 
+# Fail early to prevent a confusing error while building rust-musl-cross
+RUN CONFIG_SUB_URL="http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=3d5db9ebe860" && \
+    TMP_FILE="/tmp/config.sub" && \
+    (rm -rf "$TMP_FILE" || true) && \
+    if ! curl -C - -L -o "$TMP_FILE" "$CONFIG_SUB_URL" || ! test -f "$TMP_FILE"; then \
+        echo "FAILED TO DOWNLOAD: $CONFIG_SUB_URL" && \
+        echo 'This happens when git.savannah.gnu.org is down. You can check its downtime on https://status.doomemacs.org/' && \
+        echo 'Failing early to prevent the confusing error 2 (file not found) produced by the Makefile cloned from the musl-cross-make repository.' && \
+        false; \
+    fi && \
+    rm -rf "$TMP_FILE"
+
 COPY ./aarch64-musl-config.mak /tmp/config.mak
 
 # Build cross-compiling toolchain using https://github.com/richfelker/musl-cross-make,
