@@ -57,7 +57,7 @@ jobs:
 
       - name: "Build and push ${{matrix.target.label}}"
         env:
-          DOCKER_HUB_USERNAME: ${{secrets.DOCKER_HUB_USERNAME}}
+          DOCKER_HUB_USERNAME: ${{vars.DOCKER_HUB_USERNAME}}
           DOCKER_HUB_TOKEN: ${{secrets.DOCKER_HUB_TOKEN}}
         run: |
           echo "Building and pushing ${{matrix.target.label}}"
