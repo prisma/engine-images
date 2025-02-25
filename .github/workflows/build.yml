@@ -28,8 +28,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: "Build ${{matrix.target.label}}"
-        env:
-          DOCKER_HUB_TOKEN: ${{secrets.DOCKER_HUB_TOKEN}}
         run: |
           echo "Building ${{matrix.target.label}}"
           cd "${{matrix.target.directory}}"
@@ -59,10 +57,11 @@ jobs:
 
       - name: "Build and push ${{matrix.target.label}}"
         env:
+          DOCKER_HUB_USERNAME: ${{vars.DOCKER_HUB_USERNAME}}
           DOCKER_HUB_TOKEN: ${{secrets.DOCKER_HUB_TOKEN}}
         run: |
           echo "Building and pushing ${{matrix.target.label}}"
           cd "${{matrix.target.directory}}"
           make build
-          echo "$DOCKER_HUB_TOKEN" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
+          echo "$DOCKER_HUB_TOKEN" | docker login --username "$DOCKER_HUB_USERNAME" --password-stdin
           make push
