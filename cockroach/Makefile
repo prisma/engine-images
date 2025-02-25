@@ -1,4 +1,4 @@
-build: build-22.1.0 build-22.2 build-23.1 build-23.1.13 build-23.2.0
+build: build-22.1.0 build-22.2 build-23.1 build-23.1.13 build-23.2.0 build-24.3.3
 
 build-22.1.0:
 	docker build -t prismagraphql/cockroachdb-custom:22.1.0 ./22.1.0
