@@ -1,6 +1,4 @@
 # Prisma Engine Images
-[![Build status](https://badge.buildkite.com/e1edf477cecc77e01d2eff2cc64edc5bfd07db651fe602f8b6.svg)](https://buildkite.com/prisma/prisma-engine-images)
-
 This repo contains all build and test images, as well as a few customized database images, for the [Prisma engines](https://github.com/prisma/prisma-engine).
 
 Images are based on the lowest common denominator of glibc and OpenSSL. In practice, this means:
